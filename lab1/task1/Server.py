@@ -25,6 +25,9 @@ while True:
     message_with_time: str = f"{str(datetime.now())} {name} -> {message}"
     print(message_with_time)
 
-    client.send(message_with_time.encode('utf-8'))
+    checksum: int = client.send(message_with_time.encode('utf-8'))
+
+    if len(message_with_time.encode('utf-8')) != checksum:
+        print("Checksum is incorrect")
 
     client.close()
