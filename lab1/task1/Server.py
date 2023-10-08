@@ -1,4 +1,3 @@
-import time
 from datetime import datetime
 from socket import socket, AF_INET, SOCK_STREAM
 
@@ -18,16 +17,26 @@ while True:
 
     print(connected_message)
 
-    message: str = client.recv(1024).decode('utf-8')
+    while True:
+        try:
+            message: str = client.recv(1024).decode('utf-8')
+        except (ConnectionAbortedError, ConnectionResetError):
+            print(f"{name} -> Disconnected")
+            client.close()
+            break
 
-    time.sleep(5)
+        if message == "EXIT":
+            client.send("EXIT".encode('utf-8'))
+            print(f"{name} -> Disconnected")
+            client.close()
+            break
 
-    message_with_time: str = f"{str(datetime.now())} {name} -> {message}"
-    print(message_with_time)
+        message_with_time: str = f"{str(datetime.now())} {name} -> {message}"
+        print(message_with_time)
 
-    checksum: int = client.send(message_with_time.encode('utf-8'))
+        checksum: int = client.send(message_with_time.encode('utf-8'))
 
-    if len(message_with_time.encode('utf-8')) != checksum:
-        print("Checksum is incorrect")
+        if len(message_with_time.encode('utf-8')) != checksum:
+            print("Checksum is incorrect")
 
-    client.close()
+            client.send("Something when wrong".encode('utf-8'))

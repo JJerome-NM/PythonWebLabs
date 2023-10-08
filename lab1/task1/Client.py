@@ -1,4 +1,3 @@
-from datetime import datetime
 from socket import socket, AF_INET, SOCK_STREAM
 
 SERVER_PATCH = "localhost"
@@ -13,15 +12,19 @@ name: str = input("Enter your name -> ")
 client.send(name.encode('utf-8'))
 
 try:
-    message: str = input("Enter message -> ")
+    while True:
+        message: str = input("Enter message -> ")
+        client.send(message.encode('utf-8'))
 
-    print(f"{str(datetime.now())} Your message -> {message}")
+        response = client.recv(1024).decode('utf-8')
 
-    client.send(message.encode('utf-8'))
+        if response == "EXIT":
+            print("Connection closed")
+            client.close()
+            exit()
 
-    response = client.recv(1024).decode('utf-8')
-    print(response)
+        print(response)
 
-except ConnectionResetError:
+except (ConnectionResetError, ConnectionRefusedError):
     print("Помилка: З'єднання з сервером втрачено.")
     exit()
