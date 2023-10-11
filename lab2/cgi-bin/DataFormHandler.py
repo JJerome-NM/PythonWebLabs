@@ -63,7 +63,7 @@ print(f"""
         <input type="hidden" name="lastname" value="{lastname if gender else ""}">
         <input type="hidden" name="gender" value="{gender if gender else ""}">
         {"".join([f" <input type='hidden' name='car' value='{car}'>" for car in cars]) if cars else ""}
-        <input type="hidden" name="clear_cookies" value="true">
+        <input type="hidden" name="clear_cookies" value="{'false' if should_clear_cookie else 'true'}">
         
         <button type="submit">Clear cookies</button>
     </form>
