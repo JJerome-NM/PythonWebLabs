@@ -23,3 +23,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local folders ###
+
+/local-files/
