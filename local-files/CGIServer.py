@@ -1,7 +1,7 @@
 from http.server import HTTPServer, CGIHTTPRequestHandler
 
 
-server = HTTPServer(("localhost", 20200), CGIHTTPRequestHandler)
+server = HTTPServer(("localhost", 20201), CGIHTTPRequestHandler)
 
 print("----- Server started ------")
 
