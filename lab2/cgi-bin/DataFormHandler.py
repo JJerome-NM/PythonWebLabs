@@ -51,12 +51,12 @@ print(f"""
     <title>DataFormHandler</title>
 </head>
 <body>
-    <h2>Hello {name} thank you for filling out the form, here are your details:</h2>
-    <h3>Name - {name}</h3>
-    <h3>Lastname - {lastname}</h3>
-    <h3>Gender - {gender}</h3>
+    <h2>Hello {name if name else "User"} thank you for filling out the form, here are your details:</h2>
+    <h3>Name - {name if name else "I dont now"}</h3>
+    <h3>Lastname - {lastname if lastname else "I dont now"}</h3>
+    <h3>Gender - {gender if gender else "I dont now"}</h3>
     <h3>Cars:</h3>
-    <ul><li>{"</li><li>".join(cars)}</li></ul>
+    {f'<ul><li>{"</li><li>".join(cars)}</li></ul>' if cars else "You have not chosen anyone"}
 
     <form>
         <input type="hidden" name="name" value="{name if gender else ""}">
