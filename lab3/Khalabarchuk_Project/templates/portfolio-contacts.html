@@ -1,0 +1,11 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio-contacts.css') }}">
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+    <h3>Contacts page</h3>
+{% endblock %}

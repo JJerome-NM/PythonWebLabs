@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block links %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% endblock %}
+
+    {% block title -%}
+        <title>Portfolio</title>
+    {% endblock %}
+</head>
+<body class="bg-white-gradient">
+{% block content -%}
+    <header>
+        <nav class="navigation bg-blue-gradient">
+            <ul class="nav-pages" id="navPages">
+                <li><a href="{{ url_for('portfolio_main') }}">Home</a></li>
+                <li><a href="{{ url_for('portfolio_projects') }}">Projects</a></li>
+                <li><a href="{{ url_for('portfolio_contacts') }}">Contacts</a></li>
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
+<script src="{{ url_for('static', filename='js/portfolio-base.ts') }}"></script>
+</body>
+</html>
