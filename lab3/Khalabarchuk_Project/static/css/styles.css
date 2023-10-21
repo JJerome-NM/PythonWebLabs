@@ -13,7 +13,8 @@
 
     --white-gradient: linear-gradient(317deg, var(--white-color), var(--white-second-color));
     --blue-gradient: linear-gradient(123deg, rgb(47 184 255) 39.22%, rgb(23 210 255) 90.31%);
-    --purpul-gradient: linear-gradient(123deg, rgb(115, 33, 255) 39.22%, rgb(139, 84, 229) 90.31%);
+    --purple-gradient: linear-gradient(123deg, rgb(115, 33, 255) 39.22%, rgb(139, 84, 229) 90.31%);
+    --light-purple-gradient: linear-gradient(123deg, rgb(139, 84, 229) 39.22%, rgb(169, 124, 245) 90.31%);
 }
 
 div, ul, body{
@@ -34,6 +35,14 @@ body{
 
 .bg-blue-gradient{
     background: var(--blue-gradient);
+}
+
+.bg-purple-gradient{
+    background: var(--purple-gradient);
+}
+
+.bg-light-purple-gradient{
+    background: var(--light-purple-gradient);
 }
 
 .navigation{
@@ -125,4 +134,23 @@ body{
 
 .default-button:active{
     transform: scale(98%);
+}
+
+footer{
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+
+    height: 40px;
+
+    border-top: 2px solid var(--black-color);
+}
+
+footer .time{
+    font-weight: 700;
+
+    font-size: 1.5rem;
 }

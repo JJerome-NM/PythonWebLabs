@@ -9,3 +9,10 @@ list.forEach(link => {
         link.classList.add("selected")
     }
 })
+
+const local_time = document.getElementById("local_time")
+
+local_time.innerText = new Date().toLocaleTimeString()
+setInterval(() => {
+    local_time.innerText = new Date().toLocaleTimeString()
+}, 1000)
