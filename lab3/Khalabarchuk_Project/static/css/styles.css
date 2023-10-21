@@ -6,12 +6,14 @@
     --white-second-color: #cbcbcb;
 
     --black-color: #151515;
+    --semi-black-color: rgba(21, 21, 21, 0.5);
 
     --select-color: #ffe700;
     --select-hover-color: #ffe700;
 
-    --blue-gradient: linear-gradient(123deg, rgb(47 184 255) 39.22%, rgb(23 210 255) 90.31%);
     --white-gradient: linear-gradient(317deg, var(--white-color), var(--white-second-color));
+    --blue-gradient: linear-gradient(123deg, rgb(47 184 255) 39.22%, rgb(23 210 255) 90.31%);
+    --purpul-gradient: linear-gradient(123deg, rgb(115, 33, 255) 39.22%, rgb(139, 84, 229) 90.31%);
 }
 
 div, ul, body{

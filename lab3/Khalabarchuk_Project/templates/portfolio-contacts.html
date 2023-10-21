@@ -7,5 +7,42 @@
 
 {% block content %}
     {{ super() }}
-    <h3>Contacts page</h3>
+    <div class="main-wrapper">
+        <main class="main">
+            <div class="contacts-wrapper">
+                <div class="contacts">
+                    <div class="contacts-title">
+                        <h3>You can contact me via:</h3>
+                    </div>
+                    <ul class="contacts-list">
+                        {% if contacts %}
+                            {% for contact in contacts %}
+                                <li class="contact-wrapper">
+                                    {% if contact.contact_icon_url %}
+                                        <img class="contact-icon" src="{{ contact.contact_icon_url }}"
+                                             alt="Contact icon">
+                                    {% else %}
+                                        <span class="contact-icon"></span>
+                                    {% endif %}
+                                    <div class="contact">
+                                        <h4>{{ contact.contact_name }}:</h4>
+
+                                        {% if contact.type == "DEFAULT" %}
+                                            <a href="{{ contact.link }}">{{ contact.name }}</a>
+                                        {% else %}
+                                            <h4>{{ contact.name }}</h4>
+                                            <h5>Link: {{ contact.link }}</h5>
+                                        {% endif %}
+
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li><h4>Контактів не знайдено</h4></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
 {% endblock %}

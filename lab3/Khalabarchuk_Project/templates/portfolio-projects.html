@@ -8,6 +8,25 @@
 {% block content %}
     {{ super() }}
 
-    <h3>Project page</h3>
+    <div class="main-wrapper">
+        <main class="main">
+            {% if projects_list %}
+                <ul class="projects-list">
+                    {% for project in projects_list %}
+                        <li class="project">
+                            <img class="project-photo"
+                                 src="{{ url_for('static', filename='images/' + project.photo_url) }}"
+                                 alt="project icon"
+                            >
+                            <a href="{{ project.project_url }}">{{ project.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 style="font-weight: 400; text-align: center">Список проектів порожній</h3>
+            {% endif %}
+
+        </main>
+    </div>
 
 {% endblock %}
