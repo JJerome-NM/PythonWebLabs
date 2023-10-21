@@ -1,0 +1,57 @@
+.main-wrapper{
+    --main-border-radius: 2rem;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    display: flex;
+    flex: 1;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 1440px;
+    min-width: 100%;
+    min-height: 100%;
+
+    padding: 10px;
+}
+
+.main-wrapper .main{
+    display: flex;
+
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    max-width: 1440px;
+    min-height: 30vh;
+
+    width: 70%;
+
+    padding: 10px;
+
+    border-radius: 2rem;
+
+    background: var(--white-color);
+}
+
+.skills-list{
+    display: flex;
+
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    max-height: 40rem;
+
+    height: max-content;
+}
+
+.skills-list .skill{
+    margin: 2px;
+    width: 15%;
+
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--black-color);
+}
