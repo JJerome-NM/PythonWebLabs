@@ -1,0 +1,31 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio-main.css') }}">
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+
+    <div class="main-wrapper bg-white-gradient">
+        <main class="main">
+            <div class="photo-wrapper">
+                <img class="photo" alt="My coold photo" src="{{ url_for('static', filename='images/myPhoto.jfif') }}"/>
+            </div>
+            <div class="about-me-wrapper">
+                <div class="title-wrapper">
+                    <h2 class="title">Hello its me</h2>
+                    <h3 class="some-about-me-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        A cupiditate, et exercitationem harum illum nisi provident.
+                        Doloribus eum ipsum labore natus nisi porro possimus repudiandae sequi velit voluptatum.
+                        Blanditiis, magnam!
+                    </h3>
+                </div>
+                <a class="projects-button default-button" href="{{ url_for('portfolio_projects') }}">Projects</a>
+            </div>
+        </main>
+    </div>
+
+{% endblock %}

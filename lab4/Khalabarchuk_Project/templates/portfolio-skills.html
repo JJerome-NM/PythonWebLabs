@@ -1,0 +1,30 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio-skills.css') }}">
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+
+    <div class="main-wrapper">
+        <main class="main">
+            {% if all_skills_list %}
+                <div class="skills-header">
+                    <h1>My skills</h1>
+                </div>
+                <div class="skills-list">
+                    {% for index, skill in all_skills_list|enumerate %}
+                        <a class="skill" href="{{ url_for('portfolio_skills') }}/{{ index }}">{{ skill.name }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if selected_skill and not all_skills_list %}
+                <h2>{{ selected_skill.name }}</h2>
+                <h3>{{ selected_skill.title }}</h3>
+            {% endif %}
+        </main>
+    </div>
+
+{% endblock %}
