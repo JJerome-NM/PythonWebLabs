@@ -14,8 +14,11 @@
     {% endblock %}
 </head>
 <body class="bg-white-gradient">
-<header>
-    <nav class="navigation bg-blue-gradient">
+<header class="bg-blue-gradient">
+    <div class="left-side">
+
+    </div>
+    <nav class="navigation">
         <ul class="nav-pages" id="navPages">
             <li><a href="{{ url_for('portfolio_main') }}">Home</a></li>
             <li><a href="{{ url_for('portfolio_projects') }}">Projects</a></li>
@@ -23,6 +26,14 @@
             <li><a href="{{ url_for('portfolio_skills') }}">Skills</a></li>
         </ul>
     </nav>
+
+    <div class="right-side">
+        {% if session.get("user_data") %}
+            <a href="{{ url_for("logout") }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for("login") }}">Sign-in</a>
+        {% endif %}
+    </div>
 </header>
 
 {% block content -%}

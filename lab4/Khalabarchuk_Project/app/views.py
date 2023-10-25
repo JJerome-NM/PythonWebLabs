@@ -1,7 +1,9 @@
+import json
 import platform
 
-from flask import render_template, request, url_for
+from flask import render_template, request, session, redirect, url_for
 
+from entitys.User import User
 from app import app
 
 
@@ -67,10 +69,42 @@ def render_template_with_base_template(template: str, **context):
     return render_template(template, about_os=platform.platform(), user_agent_info=request.user_agent.string, **context)
 
 
-@app.route('/login')
-@app.route('/sign-in')
+def secured_render(template: str, **context):
+    if session.get("user_data") is None:
+        return redirect(url_for("login"))
+    return render_template_with_base_template(template, **context)
+
+
+@app.route('/login', methods=['GET'])
 def login():
     return render_template_with_base_template("login.html")
+
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    user = User(request.form.get("login"), request.form.get("password"))
+
+    with open("users.json", "r") as users_data:
+        users = json.load(users_data)
+
+        if user.login in users and user.password == users[user.login]["password"]:
+            session["user_data"] = users[user.login]["data"]
+            session["user_data"]["login"] = user.login
+            return redirect(url_for("info"))
+
+    session["login_message"] = "Check the privilege of entering your login and password"
+    return render_template_with_base_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+@app.route("/info")
+def info():
+    return secured_render("info.html")
 
 
 @app.route('/')

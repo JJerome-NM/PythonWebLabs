@@ -10,7 +10,7 @@
 
     <div class="main-wrapper">
         <main class="main">
-            <form action="{{ url_for("login") }}" type="POST" class="login-form">
+            <form action="{{ url_for("login_post") }}" method="post" class="login-form">
                 <div class="form-header">
                     <p class="form-title">
                         Login here🎯
@@ -21,8 +21,8 @@
                     <label for="login">
                         Login
                     </label>
-                    <input class="default-input" type="text" id="login" placeholder="Write login here" autocomplete="off"
-                            name="login"
+                    <input class="default-input" type="text" id="login" placeholder="Write login here"
+                           autocomplete="off" name="login"
                     >
                 </div>
                 <div class="form-row">
@@ -30,15 +30,21 @@
                         Password
                     </label>
                     <input class="default-input" type="password" id="password" placeholder="Hide your password here"
-                        name="password"
+                           name="password"
                     >
                 </div>
 
                 <div class="form-footer">
-                    <button class="default-submit" type="submit">Login</button>
+                    <button class="default-submit" type="submit">Sign-in</button>
                 </div>
             </form>
         </main>
+
+        {% if session.get("login_message") %}
+            <div class="login-message">
+                <p>{{ session.pop("login_message") }}</p>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}

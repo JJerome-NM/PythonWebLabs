@@ -1,0 +1,18 @@
+{
+  "JJerome": {
+    "password": "pass",
+    "data": {
+      "age": 19,
+      "language": "ua",
+      "work": "None"
+    }
+  },
+    "Arsen": {
+    "password": "pass",
+    "data": {
+      "age": 19,
+      "language": "ua",
+      "work": "In some company"
+    }
+  }
+}

@@ -1,15 +1,13 @@
 
 *{
-    font-family: "Roboto Light", sans-serif;
-
     --white-color: #e8e8e8;
     --white-second-color: #cbcbcb;
 
     --black-color: #151515;
-    --semi-black-color: rgba(21, 21, 21, 0.5);
+    --semi-black-color: #1515157F;
 
-    --blue-color: rgb(47 184 255);
-    --blue-second-color: rgb(23 210 255);
+    --blue-color: #2FB8FFFF;
+    --blue-second-color: #17D2FFFF;
 
     --grean-color: #0ab930;
     --grean-second-color: #2ac44d;
@@ -23,6 +21,7 @@
     --purple-gradient: linear-gradient(123deg, rgb(115, 33, 255) 39.22%, rgb(139, 84, 229) 90.31%);
     --light-purple-gradient: linear-gradient(123deg, rgb(139, 84, 229) 39.22%, rgb(169, 124, 245) 90.31%);
 
+    font-family: "Roboto Light", sans-serif;
     color: var(--black-color);
 }
 
@@ -54,6 +53,17 @@ body{
     background: var(--light-purple-gradient);
 }
 
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 2px solid var(--black-color);
+    height: 40px;
+
+    padding: 0 10px;
+}
+
 .navigation{
     display: flex;
 
@@ -62,8 +72,10 @@ body{
     align-items: center;
 
     height: 40px;
+}
 
-    border-bottom: 2px solid var(--black-color);
+.right-side{
+    /*margin: 0 10px;*/
 }
 
 .nav-pages{
@@ -90,8 +102,6 @@ body{
     font-weight: 700;
     text-decoration: none;
     padding: 10px;
-
-    color: var(--black-color);
 
     transition: ease .2s;
 }
@@ -123,8 +133,8 @@ body{
     box-sizing: border-box;
 
     padding: 5px;
+    margin: 2px;
 
-    color: var(--black-color);
     background: var(--blue-gradient);
     border: 2px solid var(--black-color);
     border-radius: .6rem;
@@ -175,6 +185,9 @@ body{
 }
 
 .default-submit{
+    display: flex;
+    box-sizing: border-box;
+
     margin: 10px;
     padding: 5px 15px;
 
