@@ -1,7 +1,7 @@
 import json
 import platform
 
-from flask import render_template, request, session, redirect, url_for
+from flask import render_template, request, session, redirect, url_for, make_response
 
 from entitys.User import User
 from app import app
@@ -102,9 +102,69 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/change_password", methods=["POST"])
+def change_password():
+
+    user_login = session["user_data"].get("login")
+    old_password = request.form.get("old_password")
+    new_password = request.form.get("new_password")
+
+    with open("users.json", "r+") as file:
+        users = json.load(file)
+
+        if old_password == users[user_login]["password"]:
+            users[user_login]["password"] = new_password
+        else:
+            session["cookie_message"] = "Enter the correct old password"
+            return redirect(url_for("info"))
+
+    with open("users.json", "w") as file:
+        json.dump(users, file)
+
+        session["cookie_message"] = "You have successfully changed your password"
+        return redirect(url_for("info"))
+
+
 @app.route("/info")
 def info():
-    return secured_render("info.html")
+    return secured_render("info.html", cookies=request.cookies.items())
+
+
+@app.route("/add_cookie", methods=["POST"])
+def add_cookie():
+    cookie_key = request.form.get("cookie_key")
+    cookie_value = request.form.get("cookie_value")
+    cookie_exp = request.form.get("expires_at")
+
+    response = make_response(redirect(url_for("info")))
+    response.set_cookie(cookie_key, cookie_value, expires=cookie_exp)
+
+    session["cookie_message"] = "You added a fancy cookie"
+
+    return response
+
+
+@app.route("/remove_cookie", methods=["POST"])
+def remove_cookie():
+    cookie_key = request.form.get("cookie_key")
+
+    response = make_response(redirect(url_for("info")))
+
+    if cookie_key is None:
+        for key in request.cookies.keys():
+            if key != "session":
+                response.delete_cookie(key)
+
+        session["cookie_message"] = "You have given all the cookies"
+        return response
+
+    if cookie_key not in request.cookies.keys():
+        session["cookie_message"] = f"Undefined {cookie_key}"
+        return redirect(url_for('info'))
+
+    response.delete_cookie(cookie_key)
+    session["cookie_message"] = f"Unfortunately, we have successfully deleted your cookie {cookie_key}"
+    return response
 
 
 @app.route('/')

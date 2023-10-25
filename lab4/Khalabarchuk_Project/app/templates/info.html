@@ -11,17 +11,105 @@
     <div class="main-wrapper">
         <main class="main">
             <div class="info-header">
-                <h4>Hello my dear {{ session.get("user_data").get("login", "user") }}!</h4>
+                <h2>Hello my dear {{ session.get("user_data").get("login", "user") }}!</h2>
+            </div>
+
+            <div class="info-logout">
+                <a class="default-submit" href="{{ url_for("logout") }}">Logout</a>
             </div>
 
             <div class="info-main">
+                {% if session.get("cookie_message") %}
+                    <div class="cookie-message">
+                        <p>{{ session.pop("cookie_message") }}</p>
+                    </div>
+                {% endif %}
 
+                <div class="add-remove-block">
+                    <form class="form-block" action="{{ url_for("add_cookie") }}" method="post">
+                        <div class="form-row">
+                            <label for="cookie_key">
+                                Key
+                            </label>
+                            <input class="default-input" type="text" id="cookie_key" name="cookie_key"
+                                   placeholder="Enter cookie key">
+                        </div>
+                        <div class="form-row">
+                            <label for="cookie_value">
+                                Value
+                            </label>
+                            <input class="default-input" type="text" id="cookie_value" name="cookie_value"
+                                   placeholder="Enter cookie value">
+                        </div>
+                        <div class="form-row">
+                            <label for="expires_at">
+                                Expire at
+                            </label>
+                            <input class="default-input" type="text" id="expires_at" name="expires_at"
+                                   placeholder="Enter cookie expire at">
+                        </div>
 
+                        <button type="submit" class="default-submit">Add cookie</button>
+                    </form>
 
-            </div>
+                    <div class="form-block">
+                        <h3>All your cookies</h3>
+                        <table class="cookie-table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Key</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for cookie_key, cookie_value in cookies %}
+                                {% if cookie_key != "session" %}
+                                    <tr>
+                                        <td>{{ cookie_key }}</td>
+                                        <td>{{ cookie_value }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
 
-            <div class="info-footer">
-                <a class="default-submit" href="{{ url_for("logout") }}">Logout</a>
+                    </div>
+
+                    <form class="form-block" action="{{ url_for("remove_cookie") }}" method="post">
+                        <div class="form-row">
+                            <label for="cookie_key">
+                                Key
+                            </label>
+                            <input class="default-input" type="text" id="cookie_key" name="cookie_key"
+                                   placeholder="Enter cookie key">
+                        </div>
+                        <div class="buttons-block">
+                            <button type="submit" class="default-submit">Remove cookie</button>
+                        </div>
+                    </form>
+                    <form action="{{ url_for("remove_cookie") }}" method="post" class="form-block">
+                        <button type="submit" class="default-submit">Remove all cookie</button>
+                    </form>
+
+                    <form class="form-block" action="{{ url_for("change_password") }}" method="post">
+                        <div class="form-row">
+                            <label for="old_password">
+                                Old password
+                            </label>
+                            <input class="default-input" type="text" id="old_password" name="old_password"
+                                   placeholder="Enter your correct password">
+                        </div>
+                        <div class="form-row">
+                            <label for="new_password">
+                                New password
+                            </label>
+                            <input class="default-input" type="text" id="new_password" name="new_password"
+                                   placeholder="Enter new password">
+                        </div>
+
+                        <button type="submit" class="default-submit">Change password</button>
+                    </form>
+                </div>
             </div>
         </main>
     </div>

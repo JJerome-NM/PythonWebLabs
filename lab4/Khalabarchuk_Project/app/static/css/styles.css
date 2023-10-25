@@ -1,5 +1,5 @@
 
-*{
+* {
     --white-color: #e8e8e8;
     --white-second-color: #cbcbcb;
 
@@ -25,35 +25,35 @@
     color: var(--black-color);
 }
 
-div, ul, body{
+div, ul, body {
     padding: 0;
     margin: 0;
 }
 
-body{
+body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     min-width: 100vw;
 }
 
-.bg-white-gradient{
+.bg-white-gradient {
     background: var(--white-gradient);
 }
 
-.bg-blue-gradient{
+.bg-blue-gradient {
     background: var(--blue-gradient);
 }
 
-.bg-purple-gradient{
+.bg-purple-gradient {
     background: var(--purple-gradient);
 }
 
-.bg-light-purple-gradient{
+.bg-light-purple-gradient {
     background: var(--light-purple-gradient);
 }
 
-header{
+header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -64,7 +64,7 @@ header{
     padding: 0 10px;
 }
 
-.navigation{
+.navigation {
     display: flex;
 
     flex-direction: row;
@@ -74,11 +74,11 @@ header{
     height: 40px;
 }
 
-.right-side{
+.right-side {
     /*margin: 0 10px;*/
 }
 
-.nav-pages{
+.nav-pages {
     list-style: none;
 
     display: flex;
@@ -92,12 +92,12 @@ header{
     height: 100%;
 }
 
-.nav-pages li{
+.nav-pages li {
     display: flex;
     align-items: center;
 }
 
-.nav-pages li a{
+.nav-pages li a {
     font-size: 1.2rem;
     font-weight: 700;
     text-decoration: none;
@@ -106,19 +106,19 @@ header{
     transition: ease .2s;
 }
 
-.nav-pages li a:hover{
+.nav-pages li a:hover {
     color: var(--select-hover-color);
 }
 
-.nav-pages li a:active{
+.nav-pages li a:active {
     transform: scale(95%);
 }
 
-.nav-pages li .selected{
+.nav-pages li .selected {
     color: var(--select-color);
 }
 
-.nav-pages li .selected::after{
+.nav-pages li .selected::after {
     content: "";
 
     display: block;
@@ -129,7 +129,7 @@ header{
     background: var(--select-color);
 }
 
-.default-button{
+.default-button {
     box-sizing: border-box;
 
     padding: 5px;
@@ -147,16 +147,15 @@ header{
     transition: ease .1s;
 }
 
-.default-button:hover{
+.default-button:hover {
     transform: scale(102%);
 }
 
-.default-button:active{
+.default-button:active {
     transform: scale(98%);
 }
 
-.default-input{
-    max-width: 15vw;
+.default-input {
     width: 100%;
 
     margin: 3px 0;
@@ -166,7 +165,7 @@ header{
     border: none;
     border-bottom: 2px solid var(--blue-color);
 
-    font-size: .8rem;
+    font-size: .9rem;
     font-weight: 600;
 
     outline: none;
@@ -174,7 +173,7 @@ header{
     transition: ease .15s;
 }
 
-.default-input:focus{
+.default-input:focus {
     scale: 1.2;
 
     border-bottom: 2px solid var(--blue-second-color);
@@ -184,7 +183,7 @@ header{
     scale: 1.05;
 }
 
-.default-submit{
+.default-submit {
     display: flex;
     box-sizing: border-box;
 
@@ -193,21 +192,23 @@ header{
 
     border-radius: 10px;
 
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
 
     border: 2px solid var(--grean-color);
 
+    background: var(--white-color);
+
     transition: ease .1s;
 }
 
-.default-submit:hover{
+.default-submit:hover {
     scale: 1.1;
 
     border: 2px solid var(--grean-second-color);
 }
 
-footer{
+footer {
     display: flex;
 
     flex-direction: row;
@@ -220,7 +221,7 @@ footer{
     border-top: 2px solid var(--black-color);
 }
 
-footer .time{
+footer .time {
     font-weight: 700;
 
     font-size: 1.5rem;
