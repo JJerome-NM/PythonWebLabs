@@ -1,0 +1,58 @@
+.main-wrapper{
+    --main-border-radius: 2rem;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    display: flex;
+    flex: 1;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 1440px;
+    min-width: 100%;
+    min-height: 100%;
+
+    padding: 10px;
+}
+
+.main-wrapper .main{
+    display: flex;
+
+    max-width: 1440px;
+    min-height: 30vh;
+
+    width: 70%;
+
+    border-radius: var(--main-border-radius);
+    border: 2px solid #151515;
+}
+
+.main .photo-wrapper{
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.main .photo-wrapper .photo{
+    display: flex;
+    max-width: 100%;
+    max-height: 100%;
+
+    border-radius: var(--main-border-radius) 0 0 var(--main-border-radius);
+}
+
+.main .about-me-wrapper{
+    box-sizing: border-box;
+    display: flex;
+
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+
+    max-width: 50%;
+
+    padding: 10px;
+}
