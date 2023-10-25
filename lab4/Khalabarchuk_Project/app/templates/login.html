@@ -1,0 +1,44 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+
+    <div class="main-wrapper">
+        <main class="main">
+            <form action="{{ url_for("login") }}" type="POST" class="login-form">
+                <div class="form-header">
+                    <p class="form-title">
+                        Login here🎯
+                    </p>
+                </div>
+
+                <div class="form-row">
+                    <label for="login">
+                        Login
+                    </label>
+                    <input class="default-input" type="text" id="login" placeholder="Write login here" autocomplete="off"
+                            name="login"
+                    >
+                </div>
+                <div class="form-row">
+                    <label for="password">
+                        Password
+                    </label>
+                    <input class="default-input" type="password" id="password" placeholder="Hide your password here"
+                        name="password"
+                    >
+                </div>
+
+                <div class="form-footer">
+                    <button class="default-submit" type="submit">Login</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+{% endblock %}

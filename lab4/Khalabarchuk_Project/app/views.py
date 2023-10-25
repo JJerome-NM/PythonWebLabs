@@ -1,6 +1,8 @@
 import platform
 
-from flask import Flask, render_template, request, url_for
+from flask import render_template, request, url_for
+
+from app import app
 
 
 PROJECTS_LIST = [{
@@ -60,18 +62,15 @@ SKILLS_LIST = list([{
     "title": "Rest is a fundamental skill that is crucial for maintaining physical and mental well-being. It refers to the act of taking a break or allowing oneself to relax and recuperate from physical, mental, or emotional exertion. Rest is essential for recharging and revitalizing the body and mind. Here are some key aspects of the skill of rest",
 }])
 
-app = Flask(__name__)
-
-
-def enumerate_filter(iterable):
-    return enumerate(iterable)
-
-
-app.jinja_env.filters['enumerate'] = enumerate_filter
-
 
 def render_template_with_base_template(template: str, **context):
     return render_template(template, about_os=platform.platform(), user_agent_info=request.user_agent.string, **context)
+
+
+@app.route('/login')
+@app.route('/sign-in')
+def login():
+    return render_template_with_base_template("login.html")
 
 
 @app.route('/')
@@ -97,7 +96,3 @@ def portfolio_skills(id: int = None):
         return render_template_with_base_template("portfolio-skills.html", selected_skill=SKILLS_LIST[id])
 
     return render_template_with_base_template("portfolio-skills.html", all_skills_list=SKILLS_LIST)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

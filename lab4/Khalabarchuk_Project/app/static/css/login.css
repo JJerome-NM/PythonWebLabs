@@ -1,0 +1,54 @@
+
+
+.main-wrapper{
+    display: flex;
+
+    flex: 1;
+
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.main-wrapper .main{
+    display: flex;
+
+    padding: 10px 30px;
+
+    border-radius: 30px;
+
+    background: var(--white-gradient-revers);
+}
+
+.login-form .form-header, .form-footer{
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.login-form .form-header p{
+    margin: 0 0 20px 0;
+}
+
+.login-form .form-row{
+    display: flex;
+
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    margin: 20px;
+}
+
+.login-form .form-row label{
+    font-size: 1.1rem;
+    font-weight: 600;
+}
