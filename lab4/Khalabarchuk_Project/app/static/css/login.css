@@ -1,5 +1,5 @@
 
-.main-wrapper{
+.main-wrapper {
     display: flex;
 
     flex: 1;
@@ -12,7 +12,7 @@
     height: 100%;
 }
 
-.main-wrapper .main{
+.main-wrapper .main {
     display: flex;
 
     padding: 10px 30px;
@@ -22,7 +22,7 @@
     background: var(--white-gradient-revers);
 }
 
-.login-form .form-header, .form-footer{
+.login-form .form-header, .form-footer {
     display: flex;
 
     flex-direction: column;
@@ -33,37 +33,49 @@
     font-weight: 800;
 }
 
-.login-form .form-header p{
+.login-form .form-header p {
     margin: 0 0 20px 0;
 }
 
-.login-form .form-row{
+.login-form .form-row {
     display: flex;
 
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
 
+    min-width: 30vw;
+
     margin: 20px;
 }
 
-.login-form .form-row label{
+.login-form .form-input dd {
+    width: 100%;
+}
+
+.login-form .form-row label {
     font-size: 1.1rem;
     font-weight: 600;
 }
 
-.login-message{
+.login-form .checkbox {
+    display: flex;
 
-    margin: 5px 0 0 0;
-    padding: 5px;
-
-    background: var(--white-second-color);
-
-    border-radius: 10px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-.login-message p{
-    margin: 0;
 
-    font-weight: 600;
+.login-form .checkbox dt {
+    margin-right: 10px;
+}
+
+.login-form .checkbox dd {
+    align-items: center;
+}
+
+.login-form .form-submit {
+    justify-content: center;
+    align-items: center;
 }

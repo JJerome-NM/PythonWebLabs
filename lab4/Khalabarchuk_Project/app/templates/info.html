@@ -11,12 +11,14 @@
     <div class="main-wrapper">
         <main class="main">
             <div class="info-header">
-                <h2>Hello my dear {{ session.get("user_data").get("login", "user") }}!</h2>
+                <h2>Hello my dear {{ session.get("user_data", {}).get("login", "user") }}!</h2>
             </div>
 
-            <div class="info-logout">
-                <a class="default-submit" href="{{ url_for("logout") }}">Logout</a>
-            </div>
+            {% if session.get("user_data") %}
+                <div class="info-logout">
+                    <a class="default-submit" href="{{ url_for("logout") }}">Logout</a>
+                </div>
+            {% endif %}
 
             <div class="info-main">
                 {% if session.get("cookie_message") %}
