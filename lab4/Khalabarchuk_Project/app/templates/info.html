@@ -93,12 +93,15 @@
                         <button type="submit" class="default-submit">Remove all cookie</button>
                     </form>
 
-                    <form class="form-block change-pass-form" action="{{ url_for("change_password") }}" method="post" novalidate>
-                        {{ change_password_from.csrf_token }}
-                        <div class="form-row form-input"> {{ render_field(change_password_from.old_password) }} </div>
-                        <div class="form-row form-input"> {{ render_field(change_password_from.new_password) }} </div>
-                        <div class="form-row form-submit"> {{ change_password_from.submit(class="default-submit") }} </div>
-                    </form>
+                    {% if change_password_from %}
+                        <form class="form-block change-pass-form" action="{{ url_for("change_password") }}"
+                              method="post" novalidate>
+                            {{ change_password_from.csrf_token }}
+                            <div class="form-row form-input"> {{ render_field(change_password_from.old_password) }} </div>
+                            <div class="form-row form-input"> {{ render_field(change_password_from.new_password) }} </div>
+                            <div class="form-row form-submit"> {{ change_password_from.submit(class="default-submit") }} </div>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </main>
