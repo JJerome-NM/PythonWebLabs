@@ -1,0 +1,14 @@
+{% macro render_field(field) %}
+    {% if field.errors %}
+        <dt>{{ field.label(class="control-label") }}
+        <dd>{{ field(class="default-input", **kwargs) | safe }}
+            <ul>
+                {% for error in field.errors %}
+                    <li class="list-group-item list-group-item-danger">{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+        <dt>{{ field.label(class="control-label") }}
+        <dd>{{ field(class="default-input", **kwargs) | safe }}
+    {% endif %}
+{% endmacro %}

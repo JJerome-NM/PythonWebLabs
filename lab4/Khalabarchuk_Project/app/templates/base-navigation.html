@@ -1,0 +1,15 @@
+{% set navs = {
+"Home": url_for('portfolio_main'),
+"Projects": url_for('portfolio_projects'),
+"Contacts": url_for('portfolio_contacts'),
+"Skills": url_for('portfolio_skills'),
+"Info": url_for('info')
+} %}
+
+<nav class="navigation">
+    <ul class="nav-pages" id="navPages">
+        {% for label, nav in navs.items() %}
+            <li><a href="{{ nav }}">{{ label }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>

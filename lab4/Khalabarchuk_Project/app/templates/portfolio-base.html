@@ -6,27 +6,28 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% block links %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/darkly/bootstrap.min.css"
+              crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
     {% endblock %}
 
-    {% block title -%}
-        <title>Portfolio</title>
-    {% endblock %}
+    <title>
+        {% block title -%}
+            Portfolio
+        {% endblock %}
+    </title>
 </head>
 <body class="bg-white-gradient">
 <header class="bg-blue-gradient">
     <div class="left-side">
 
     </div>
-    <nav class="navigation">
-        <ul class="nav-pages" id="navPages">
-            <li><a href="{{ url_for('portfolio_main') }}">Home</a></li>
-            <li><a href="{{ url_for('portfolio_projects') }}">Projects</a></li>
-            <li><a href="{{ url_for('portfolio_contacts') }}">Contacts</a></li>
-            <li><a href="{{ url_for('portfolio_skills') }}">Skills</a></li>
-            <li><a href="{{ url_for('info') }}">Info</a></li>
-        </ul>
-    </nav>
+
+    {% include "base-navigation.html" %}
 
     <div class="right-side">
         {% if session.get("user_data") %}
@@ -40,19 +41,18 @@
 {% block content -%}
 {% endblock %}
 
-<footer class="bg-light-purple-gradient">
-    {% if about_os %}
-        <div class="about-os">
-            {{ about_os }}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="alert alert-dismissible alert-{{ category }}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <p class="mb-0">{{ message }}</p>
         </div>
-    {% endif %}
-    {% if user_agent_info %}
-        <div class="user-agent-info">
-            {{ user_agent_info }}
-        </div>
-    {% endif %}
-    <div class="time" id="local_time"></div>
-</footer>
+    {% endfor %}
+{% endwith %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='js/portfolio-base.ts') }}"></script>
 </body>
 </html>

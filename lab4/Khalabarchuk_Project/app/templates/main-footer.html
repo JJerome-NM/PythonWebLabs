@@ -1,0 +1,13 @@
+<footer class="bg-light-purple-gradient">
+    {% if about_os %}
+        <div class="about-os">
+            {{ about_os }}
+        </div>
+    {% endif %}
+    {% if user_agent_info %}
+        <div class="user-agent-info">
+            {{ user_agent_info }}
+        </div>
+    {% endif %}
+    <div class="time" id="local_time"></div>
+</footer>
