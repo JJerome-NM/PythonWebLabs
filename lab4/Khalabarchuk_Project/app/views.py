@@ -3,7 +3,7 @@ import platform
 
 from flask import render_template, request, session, redirect, url_for, make_response, flash
 
-from entitys.LoginForm import LoginForm
+from entitys.LoginForm import LoginForm, ChangePasswordForm
 from app import app
 
 PROJECTS_LIST = [{
@@ -109,27 +109,30 @@ def logout():
 @app.route("/change_password", methods=["POST"])
 def change_password():
     user_login = session["user_data"].get("login")
-    old_password = request.form.get("old_password")
-    new_password = request.form.get("new_password")
 
-    with open("users.json", "r+") as file:
-        users = json.load(file)
+    form = ChangePasswordForm()
 
-        if old_password == users[user_login]["password"]:
-            users[user_login]["password"] = new_password
-        else:
-            flash("Enter the correct old password", "danger")
-            return redirect(url_for("info"))
+    if form.validate_on_submit():
+        with open("users.json", "r") as file:
+            users = json.load(file)
 
-    with open("users.json", "w") as file:
-        json.dump(users, file)
-        flash("You have successfully changed your password", "success")
-        return redirect(url_for("info"))
+            if form.old_password.data == users[user_login]["password"]:
+                users[user_login]["password"] = form.new_password.data
+            else:
+                flash("Enter the correct old password", "danger")
+                return redirect(url_for("info"))
+
+        with open("users.json", "w") as file:
+            json.dump(users, file)
+            flash("You have successfully changed your password", "success")
+
+    return secured_render("info.html", change_password_from=form, cookies=request.cookies.items())
 
 
 @app.route("/info")
 def info():
-    return secured_render("info.html", cookies=request.cookies.items())
+    form = ChangePasswordForm()
+    return secured_render("info.html", change_password_from=form, cookies=request.cookies.items())
 
 
 @app.route("/add_cookie", methods=["POST"])

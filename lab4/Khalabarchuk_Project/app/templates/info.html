@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    {{ super() }}
+    {% from "render-filed.html" import render_field %}
 
     <div class="main-wrapper">
         <main class="main">
@@ -93,23 +93,11 @@
                         <button type="submit" class="default-submit">Remove all cookie</button>
                     </form>
 
-                    <form class="form-block" action="{{ url_for("change_password") }}" method="post">
-                        <div class="form-row">
-                            <label for="old_password">
-                                Old password
-                            </label>
-                            <input class="default-input" type="password" id="old_password" name="old_password"
-                                   placeholder="Enter your correct password">
-                        </div>
-                        <div class="form-row">
-                            <label for="new_password">
-                                New password
-                            </label>
-                            <input class="default-input" type="password" id="new_password" name="new_password"
-                                   placeholder="Enter new password">
-                        </div>
-
-                        <button type="submit" class="default-submit">Change password</button>
+                    <form class="form-block change-pass-form" action="{{ url_for("change_password") }}" method="post" novalidate>
+                        {{ change_password_from.csrf_token }}
+                        <div class="form-row form-input"> {{ render_field(change_password_from.old_password) }} </div>
+                        <div class="form-row form-input"> {{ render_field(change_password_from.new_password) }} </div>
+                        <div class="form-row form-submit"> {{ change_password_from.submit(class="default-submit") }} </div>
                     </form>
                 </div>
             </div>

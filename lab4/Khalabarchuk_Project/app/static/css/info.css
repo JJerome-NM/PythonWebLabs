@@ -95,3 +95,29 @@
 
     font-weight: 600;
 }
+
+.login-form .form-row {
+    display: flex;
+
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    min-width: 30vw;
+
+    margin: 20px;
+}
+
+.change-pass-form .form-input dd {
+    width: 100%;
+}
+
+.change-pass-form .form-row label {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.change-pass-form .form-submit {
+    justify-content: center;
+    align-items: center;
+}

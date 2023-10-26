@@ -14,8 +14,8 @@ class LoginForm(FlaskForm):
 
 
 class ChangePasswordForm(FlaskForm):
-    oldpassword = PasswordField('Enter old password', validators=[DataRequired("This field is required!")])
-    newpassword = PasswordField('Enter new password', validators=[
+    old_password = PasswordField('Old password', validators=[DataRequired("This field is required!")])
+    new_password = PasswordField('New password', validators=[
         DataRequired("This field is required"),
         Length(min=4, max=10, message="The length must be greater than 3 and less than 10")
     ])
