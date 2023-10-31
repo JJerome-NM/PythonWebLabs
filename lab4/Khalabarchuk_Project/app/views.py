@@ -94,7 +94,7 @@ def login():
                 flash("You are logged in without remembering", "success")
                 return base_render("info.html", cookies=request.cookies.items())
 
-        flash("Check the privilege of entering your login and password", "danger", )
+        flash("Check the privilege of entering your login and password", "danger")
 
     return base_render("login.html", form=form)
 
