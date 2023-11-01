@@ -1,0 +1,29 @@
+.main-wrapper{
+    display: flex;
+
+    flex: 1;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.main-wrapper .main{
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 30px;
+    padding: 30px;
+
+    background: var(--white-gradient-revers);
+}
+
+.form-field-row{
+    width: 75%;
+}

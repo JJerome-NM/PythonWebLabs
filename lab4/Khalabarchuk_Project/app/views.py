@@ -5,6 +5,8 @@ from flask import render_template, request, session, redirect, url_for, make_res
 
 from entitys.LoginForm import LoginForm, ChangePasswordForm
 from app import app
+from entitys.ToDo import ToDo, ToDoForm
+from app import db
 
 PROJECTS_LIST = [{
     "photo_url": "projectNMWS.png",
@@ -72,6 +74,45 @@ def secured_render(template: str, **context):
     if session.get("user_data") is None:
         return redirect(url_for("login"))
     return base_render(template, **context)
+
+
+@app.route('/todo', methods=["GET"])
+def todo_page():
+    return secured_render("todo-page.html", todo_list=ToDo.query.all(), todo_form=ToDoForm())
+
+
+@app.route("/todo", methods=["POST"])
+def add_todo():
+    todo_form = ToDoForm()
+    new_todo = ToDo(title=todo_form.title.data, completed=False, status=ToDo.Status.IN_PROGRESS)
+    db.session.add(new_todo)
+    db.session.commit()
+
+    flash('Todo added successfully', 'success')
+
+    return redirect(url_for("todo_page"))
+
+
+@app.route("/todo/<string:id>")
+def delete_todo(id: str):
+    todo = db.get_or_404(ToDo, id)
+    db.session.delete(todo)
+    db.session.commit()
+    flash('Todo deleted successfully', 'success')
+
+    return redirect(url_for("todo_page"))
+
+
+@app.route("/todo/<string:id>/update")
+def update_todo(id: str):
+    todo = db.get_or_404(ToDo, id)
+    todo.complete()
+
+    db.session.commit()
+    flash('Todo updated successfully', 'success')
+
+    return redirect(url_for("todo_page"))
+
 
 
 @app.route('/login', methods=["GET", "POST"])
