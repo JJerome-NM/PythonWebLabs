@@ -1,0 +1,46 @@
+.main-wrapper{
+    display: flex;
+
+    flex: 1;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.main-wrapper .main{
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 30px;
+    padding: 30px 15px;
+
+    background: var(--white-gradient-revers);
+}
+
+.form-field-row{
+    width: 75%;
+}
+
+.comment-wrapper{
+    margin: 3px 0;!important;
+    padding: 5px;!important;
+    border-radius: 10px;
+    background: var(--white-second-color);
+}
+
+.username{
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.comment{
+    font-size: .9rem;
+    font-weight: 400;
+}

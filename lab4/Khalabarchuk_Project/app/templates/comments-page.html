@@ -1,0 +1,43 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/comments-page.css') }}">
+{% endblock %}
+
+{% from "render-filed.html" import render_field %}
+
+{% block content %}
+
+    <div class="main-wrapper">
+        <main class="main container w-50">
+            <form class="row todo-add-part d-flex flex-row align-items-center w-100"
+                  action="{{ url_for("add_comment") }}"
+                  METHOD="post"
+                  novalidate
+            >
+                {{ comment_form.csrf_token }}
+                {{ render_field(comment_form.comment, class="default-input", placeholder="Enter comment here") }}
+                {{ comment_form.submit(class="default-submit w-auto mx-4") }}
+            </form>
+
+            <div class="comments-block container d-flex justify-content-center flex-column align-items-center">
+                {% for comment in comments %}
+
+                    <div class="container comment-wrapper d-flex flex-column">
+                        <div class="container d-flex flex-row justify-content-between">
+                            <div class="username">{{ comment.username }}</div>
+                            <div class="date">{{ comment.date }}</div>
+                        </div>
+                        <hr style="margin: 2px 0">
+                        <div class="comment container">
+                            {{ comment.comment }}
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+        </main>
+    </div>
+
+{% endblock %}

@@ -1,12 +1,14 @@
+import datetime
 import json
 import platform
 
 from flask import render_template, request, session, redirect, url_for, make_response, flash
 
-from entitys.LoginForm import LoginForm, ChangePasswordForm
 from app import app
-from entitys.ToDo import ToDo, ToDoForm
 from app import db
+from entitys.LoginForm import LoginForm, ChangePasswordForm
+from entitys.ToDo import ToDo, ToDoForm
+from entitys.Comment import CommentForm, Comment
 
 PROJECTS_LIST = [{
     "photo_url": "projectNMWS.png",
@@ -76,6 +78,28 @@ def secured_render(template: str, **context):
     return base_render(template, **context)
 
 
+@app.route("/comments")
+def comments_page():
+    return secured_render("comments-page.html", comment_form=CommentForm(), comments=Comment.query.all())
+
+
+@app.route("/comments", methods=["POST"])
+def add_comment():
+    comment_form = CommentForm()
+
+    if comment_form.validate_on_submit():
+        user_login = session["user_data"].get("login")
+        date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        new_comment = Comment(username=user_login, comment=comment_form.comment.data, date=date)
+        db.session.add(new_comment)
+        db.session.commit()
+
+        flash('Comment added successfully', 'success')
+
+    return redirect(url_for("comments_page"))
+
+
 @app.route('/todo', methods=["GET"])
 def todo_page():
     return secured_render("todo-page.html", todo_list=ToDo.query.all(), todo_form=ToDoForm())
@@ -84,11 +108,12 @@ def todo_page():
 @app.route("/todo", methods=["POST"])
 def add_todo():
     todo_form = ToDoForm()
-    new_todo = ToDo(title=todo_form.title.data, completed=False, status=ToDo.Status.IN_PROGRESS)
-    db.session.add(new_todo)
-    db.session.commit()
+    if todo_form.validate_on_submit():
+        new_todo = ToDo(title=todo_form.title.data, completed=False, status=ToDo.Status.IN_PROGRESS)
+        db.session.add(new_todo)
+        db.session.commit()
 
-    flash('Todo added successfully', 'success')
+        flash('Todo added successfully', 'success')
 
     return redirect(url_for("todo_page"))
 
@@ -112,7 +137,6 @@ def update_todo(id: str):
     flash('Todo updated successfully', 'success')
 
     return redirect(url_for("todo_page"))
-
 
 
 @app.route('/login', methods=["GET", "POST"])
