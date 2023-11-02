@@ -14,4 +14,4 @@ class Comment(db.Model):
 
 class CommentForm(FlaskForm):
     comment = StringField("", validators=[DataRequired(message="This field is required.")])
-    submit = SubmitField("Save")
+    submit = SubmitField("Comment")
