@@ -20,6 +20,10 @@
                 {{ comment_form.submit(class="default-submit w-auto mx-4") }}
             </form>
 
+            <div class="container">
+                Comments:
+            </div>
+
             <div class="comments-block container d-flex justify-content-center flex-column align-items-center">
                 {% for comment in comments %}
 
@@ -28,7 +32,7 @@
                             <div class="username">{{ comment.username }}</div>
                             <div class="date">{{ comment.date }}</div>
                         </div>
-                        <hr style="margin: 2px 0">
+                        <hr style="margin: 2px 0; ">
                         <div class="comment container">
                             {{ comment.comment }}
                         </div>
