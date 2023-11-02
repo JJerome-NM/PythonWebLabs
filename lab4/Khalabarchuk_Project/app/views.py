@@ -96,6 +96,8 @@ def add_comment():
         db.session.commit()
 
         flash('Comment added successfully', 'success')
+    else:
+        flash('Something went wrong while adding a comment', 'danger')
 
     return redirect(url_for("comments_page"))
 
