@@ -4,11 +4,12 @@ import platform
 
 from flask import render_template, request, session, redirect, url_for, make_response, flash
 
-from app import app
+from app import app, bcrypt
 from app import db
-from entitys.LoginForm import LoginForm, ChangePasswordForm
+from entitys.Login import LoginForm, ChangePasswordForm
 from entitys.ToDo import ToDo, ToDoForm
 from entitys.Comment import CommentForm, Comment
+from entitys.User import RegistrationForm, AuthUser
 
 PROJECTS_LIST = [{
     "photo_url": "projectNMWS.png",
@@ -139,6 +140,25 @@ def update_todo(id: str):
     flash('Todo updated successfully', 'success')
 
     return redirect(url_for("todo_page"))
+
+
+@app.route("/register", methods=["GET", "POST"])
+def sign_up():
+    reg_form = RegistrationForm()
+
+    if reg_form.validate_on_submit():
+
+
+
+        pass_hash = bcrypt.generate_password_hash(reg_form.password.data)
+
+        new_todo = AuthUser(email=reg_form.email.data, username=reg_form.username.data, password=pass_hash)
+        db.session.add(new_todo)
+        db.session.commit()
+
+        flash('Successfully', 'success')
+
+    return base_render("sign_up.html", reg_form=reg_form)
 
 
 @app.route('/login', methods=["GET", "POST"])

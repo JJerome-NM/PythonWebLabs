@@ -7,7 +7,7 @@ class LoginForm(FlaskForm):
     login = StringField('Login', validators=[DataRequired("This field is required")])
     password = PasswordField('Password', validators=[
         DataRequired("This field is required"),
-        Length(min=4, max=10, message="The length must be greater than 3 and less than 10")
+        Length(min=4, max=30, message="The length must be greater than 3 and less than 30")
     ])
     remember = BooleanField('Remember')
     submit = SubmitField("Sign-in")
