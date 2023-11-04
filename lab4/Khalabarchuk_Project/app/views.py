@@ -147,12 +147,9 @@ def sign_up():
     reg_form = RegistrationForm()
 
     if reg_form.validate_on_submit():
+        res = db.session.query(AuthUser).filter_by(username=reg_form.username.data).first()
 
-
-
-        pass_hash = bcrypt.generate_password_hash(reg_form.password.data)
-
-        new_todo = AuthUser(email=reg_form.email.data, username=reg_form.username.data, password=pass_hash)
+        new_todo = AuthUser(email=reg_form.email.data, username=reg_form.username.data, password=reg_form.password.data)
         db.session.add(new_todo)
         db.session.commit()
 
