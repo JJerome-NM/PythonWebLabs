@@ -26,12 +26,7 @@
     {% include "base-navigation.html" %}
 
     <div class="right-side">
-        {% if session.get("user_data") %}
-            <a href="{{ url_for("logout") }}">Logout</a>
-        {% else %}
-            <a href="{{ url_for("login") }}">Sign-in</a>
-            <a href="{{ url_for("sign_up") }}">Sign-up</a>
-        {% endif %}
+        {% include "user_details_header.html" %}
     </div>
 </header>
 

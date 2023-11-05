@@ -1,0 +1,54 @@
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/user_details_header.css') }}">
+{% endblock %}
+
+{% if not session.get("user_data") %}
+
+    <div class="">
+        <a href="{{ url_for("login") }}">Sign-in</a>
+        <a href="{{ url_for("sign_up") }}">Sign-up</a>
+    </div>
+
+{% else %}
+
+    <div class="d-flex flex-row align-items-center justify-content-center">
+
+        <div>
+            {{ session.get("user_data").get("username") }}
+        </div>
+
+        <div class="user-details-avatar"
+                style="background-image: url('{{ url_for('static', filename='images/users-avatars/' + session.get("user_data").get("avatar_image")) }}')"
+        >
+{#            <image class="user-details-avatar"#}
+{#                   href="{{ url_for('static', filename='images/users-avatars/' + session.get("user_data").get("avatar_image")) }}"#}
+{#            ></image>#}
+        </div>
+
+        <div class="nav-item dropdown">
+            <a class="dropdown-toggle show user-details"
+               data-bs-toggle="dropdown"
+               role="button"
+               aria-haspopup="true"
+               aria-expanded="true"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+            <div class="dropdown-menu"
+                 style="position: absolute; inset: 0 auto auto 0; margin: 0; transform: translate(0px, 44px);"
+                 data-popper-placement="bottom-start"
+            >
+                <h6 class="dropdown-header">User details</h6>
+                <a class="dropdown-item" href="{{ url_for('info') }}">Info</a>
+                <a class="dropdown-item" href="{{ url_for('todo_page') }}">ToDo</a>
+                {% if session.get("user_data") %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for("logout") }}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endif %}
