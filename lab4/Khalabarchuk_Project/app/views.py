@@ -80,6 +80,11 @@ def secured_render(template: str, **context):
     return base_render(template, **context)
 
 
+@app.route("/users")
+def get_users():
+    return secured_render("all-users.html", users=AuthUser.query.all())
+
+
 @app.route("/comments")
 def comments_page():
     return secured_render("comments-page.html", comment_form=CommentForm(), comments=Comment.query.all())
