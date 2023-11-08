@@ -1,0 +1,28 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% from "render-filed.html" import render_field %}
+
+    <div class="main-wrapper">
+        <main class="main w-25">
+            <form action="{{ url_for("sign_up") }}" method="post" class="login-form w-100" novalidate>
+                {{ reg_form.csrf_token }}
+                <div class="form-header">
+                    <p class="form-title">
+                        Sign-up here🎉
+                    </p>
+                </div>
+                <div> {{ render_field(reg_form.username) }} </div>
+                <div> {{ render_field(reg_form.email) }} </div>
+                <div> {{ render_field(reg_form.password) }} </div>
+                <div> {{ render_field(reg_form.confirm_password) }} </div>
+                <div class="d-flex justify-content-center align-items-center"> {{ reg_form.submit(class="default-submit") }} </div>
+            </form>
+        </main>
+    </div>
+
+{% endblock %}

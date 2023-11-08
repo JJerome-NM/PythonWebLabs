@@ -11,7 +11,7 @@
     <div class="main-wrapper">
         <main class="main">
             <div class="info-header">
-                <h2>Hello my dear {{ session.get("user_data", {}).get("login", "user") }}!</h2>
+                <h2>Hello my dear {{ session.get("user_data", {}).get("username", "user") }}!</h2>
             </div>
 
             {% if session.get("user_data") %}

@@ -44,6 +44,10 @@ body {
     background: var(--white-gradient);
 }
 
+.bg-white-gradient-revers {
+    background: var(--white-gradient-revers);
+}
+
 .bg-blue-gradient {
     background: var(--blue-gradient);
 }

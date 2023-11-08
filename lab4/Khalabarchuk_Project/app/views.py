@@ -3,12 +3,14 @@ import json
 import platform
 
 from flask import render_template, request, session, redirect, url_for, make_response, flash
+from wtforms import ValidationError
 
-from app import app
+from app import app, bcrypt
 from app import db
-from entitys.LoginForm import LoginForm, ChangePasswordForm
+from entitys.Login import LoginForm, ChangePasswordForm
 from entitys.ToDo import ToDo, ToDoForm
 from entitys.Comment import CommentForm, Comment
+from entitys.User import RegistrationForm, AuthUser
 
 PROJECTS_LIST = [{
     "photo_url": "projectNMWS.png",
@@ -78,6 +80,11 @@ def secured_render(template: str, **context):
     return base_render(template, **context)
 
 
+@app.route("/users")
+def get_users():
+    return secured_render("all-users.html", users=AuthUser.query.all())
+
+
 @app.route("/comments")
 def comments_page():
     return secured_render("comments-page.html", comment_form=CommentForm(), comments=Comment.query.all())
@@ -141,27 +148,68 @@ def update_todo(id: str):
     return redirect(url_for("todo_page"))
 
 
+@app.route("/register", methods=["GET", "POST"])
+def sign_up():
+    reg_form = RegistrationForm()
+
+    if reg_form.validate_on_submit():
+        validation_error = False
+
+        try:
+            AuthUser.validate_email(reg_form.email.data)
+        except ValidationError:
+            validation_error = True
+            reg_form.username.errors.append("Username is busy")
+
+        try:
+            AuthUser.validate_username(reg_form.email.data)
+        except ValidationError:
+            validation_error = True
+            reg_form.email.errors.append("Email is busy")
+
+        if validation_error:
+            return base_render("sign_up.html", reg_form=reg_form)
+
+        try:
+            new_todo = AuthUser(email=reg_form.email.data, username=reg_form.username.data,
+                                password=reg_form.password.data)
+            db.session.add(new_todo)
+            db.session.commit()
+        except Exception:
+            flash("Something want wrong", 'danger')
+
+        flash('You have successfully registered', 'success')
+        return redirect(url_for("login"))
+
+    return base_render("sign_up.html", reg_form=reg_form)
+
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        with open("users.json", "r") as users_data:
-            users = json.load(users_data)
+        db_user = db.session.query(AuthUser).filter_by(email=form.login.data).first()
 
-            if form.login.data in users \
-                    and form.password.data == users[form.login.data]["password"] \
-                    and form.remember.data:
-                session["user_data"] = users[form.login.data]["data"]
-                session["user_data"]["login"] = form.login.data
+        if not db_user:
+            session.pop("user_data", None)
+            form.login.errors.append("Login or password is incorrect")
+            form.password.errors.append("Login or password is incorrect")
+            flash("Login or password is incorrect", 'danger')
+            return base_render("login.html", form=form)
 
-                flash("You have successfully signed-in", "success")
-                return redirect(url_for("info"))
-            else:
-                flash("You are logged in without remembering", "success")
-                return base_render("info.html", cookies=request.cookies.items())
+        if db_user.verify_password(password=form.password.data) and form.remember.data:
+            session["user_data"] = {}
+            session["user_data"]["login"] = db_user.email
+            session["user_data"]["username"] = db_user.username
+            session["user_data"]["avatar_image"] = db_user.avatar_image
 
-        flash("Check the privilege of entering your login and password", "danger")
+            flash("You have successfully signed-in", "success")
+            return redirect(url_for("info"))
+        else:
+            session.pop("user_data", None)
+            flash("You are logged in without remembering", "warning")
+            return base_render("info.html", cookies=request.cookies.items())
 
     return base_render("login.html", form=form)
 
@@ -175,23 +223,19 @@ def logout():
 
 @app.route("/change_password", methods=["POST"])
 def change_password():
-    user_login = session["user_data"].get("login")
-
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-        with open("users.json", "r") as file:
-            users = json.load(file)
+        user_login = session["user_data"].get("login")
+        db_user = db.session.query(AuthUser).filter_by(email=user_login).first()
 
-            if form.old_password.data == users[user_login]["password"]:
-                users[user_login]["password"] = form.new_password.data
-            else:
-                flash("Enter the correct old password", "danger")
-                return redirect(url_for("info"))
-
-        with open("users.json", "w") as file:
-            json.dump(users, file)
+        if db_user and db_user.verify_password(form.old_password.data):
+            db_user.password = form.new_password.data
+            db.session.add(db_user)
+            db.session.commit()
             flash("You have successfully changed your password", "success")
+        else:
+            form.old_password.errors.append("Enter the correct old password")
 
     return secured_render("info.html", change_password_from=form, cookies=request.cookies.items())
 

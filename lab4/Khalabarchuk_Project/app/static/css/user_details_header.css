@@ -1,0 +1,38 @@
+
+.dropdown-toggle::after {
+    content: none;!important;
+}
+
+.user-details {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 30px;
+    width: 10px;
+
+    margin: 0 5px;
+}
+
+.user-details span {
+    display: block;
+    width: 8px;
+    height: 8px;
+
+    border-radius: 100%;
+
+    background: var(--black-color);
+}
+
+.user-details-avatar{
+    margin: 5px;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 100%;
+
+    background-size: cover;!important;
+}
