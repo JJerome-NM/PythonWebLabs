@@ -3,6 +3,7 @@ import json
 import platform
 
 from flask import render_template, request, session, redirect, url_for, make_response, flash
+from flask_login import login_user, login_required, current_user, logout_user
 from wtforms import ValidationError
 
 from app import app, bcrypt
@@ -74,31 +75,33 @@ def base_render(template: str, **context):
     return render_template(template, about_os=platform.platform(), user_agent_info=request.user_agent.string, **context)
 
 
-def secured_render(template: str, **context):
-    if session.get("user_data") is None:
-        return redirect(url_for("login"))
-    return base_render(template, **context)
+# def secured_render(template: str, **context):
+#     if session.get("user_data") is None:
+#         return redirect(url_for("login"))
+#     return base_render(template, **context)
 
 
 @app.route("/users")
+@login_required
 def get_users():
-    return secured_render("all-users.html", users=AuthUser.query.all())
+    return base_render("all-users.html", users=AuthUser.query.all())
 
 
 @app.route("/comments")
+@login_required
 def comments_page():
-    return secured_render("comments-page.html", comment_form=CommentForm(), comments=Comment.query.all())
+    return base_render("comments-page.html", comment_form=CommentForm(), comments=Comment.query.all())
 
 
 @app.route("/comments", methods=["POST"])
+@login_required
 def add_comment():
     comment_form = CommentForm()
 
     if comment_form.validate_on_submit():
-        user_login = session["user_data"].get("login")
         date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        new_comment = Comment(username=user_login, comment=comment_form.comment.data, date=date)
+        new_comment = Comment(username=current_user.username, comment=comment_form.comment.data, date=date)
         db.session.add(new_comment)
         db.session.commit()
 
@@ -110,11 +113,13 @@ def add_comment():
 
 
 @app.route('/todo', methods=["GET"])
+@login_required
 def todo_page():
-    return secured_render("todo-page.html", todo_list=ToDo.query.all(), todo_form=ToDoForm())
+    return base_render("todo-page.html", todo_list=ToDo.query.all(), todo_form=ToDoForm())
 
 
 @app.route("/todo", methods=["POST"])
+@login_required
 def add_todo():
     todo_form = ToDoForm()
     if todo_form.validate_on_submit():
@@ -128,6 +133,7 @@ def add_todo():
 
 
 @app.route("/todo/<string:id>")
+@login_required
 def delete_todo(id: str):
     todo = db.get_or_404(ToDo, id)
     db.session.delete(todo)
@@ -138,6 +144,7 @@ def delete_todo(id: str):
 
 
 @app.route("/todo/<string:id>/update")
+@login_required
 def update_todo(id: str):
     todo = db.get_or_404(ToDo, id)
     todo.complete()
@@ -150,6 +157,9 @@ def update_todo(id: str):
 
 @app.route("/register", methods=["GET", "POST"])
 def sign_up():
+    if current_user.is_authenticated:
+        return redirect(url_for("info"))
+
     reg_form = RegistrationForm()
 
     if reg_form.validate_on_submit():
@@ -171,9 +181,9 @@ def sign_up():
             return base_render("sign_up.html", reg_form=reg_form)
 
         try:
-            new_todo = AuthUser(email=reg_form.email.data, username=reg_form.username.data,
+            user = AuthUser(email=reg_form.email.data, username=reg_form.username.data,
                                 password=reg_form.password.data)
-            db.session.add(new_todo)
+            db.session.add(user)
             db.session.commit()
         except Exception:
             flash("Something want wrong", 'danger')
@@ -184,50 +194,56 @@ def sign_up():
     return base_render("sign_up.html", reg_form=reg_form)
 
 
+@app.route("/account")
+def account():
+    return base_render("account.html")
+
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("info"))
+
     form = LoginForm()
 
     if form.validate_on_submit():
         db_user = db.session.query(AuthUser).filter_by(email=form.login.data).first()
 
-        if not db_user:
-            session.pop("user_data", None)
+        if not db_user or not db_user.verify_password(password=form.password.data):
             form.login.errors.append("Login or password is incorrect")
             form.password.errors.append("Login or password is incorrect")
             flash("Login or password is incorrect", 'danger')
             return base_render("login.html", form=form)
 
-        if db_user.verify_password(password=form.password.data) and form.remember.data:
-            session["user_data"] = {}
-            session["user_data"]["login"] = db_user.email
-            session["user_data"]["username"] = db_user.username
-            session["user_data"]["avatar_image"] = db_user.avatar_image
+        login_user(db_user, remember=form.remember.data)
 
+        if form.remember.data:
             flash("You have successfully signed-in", "success")
-            return redirect(url_for("info"))
         else:
             session.pop("user_data", None)
             flash("You are logged in without remembering", "warning")
-            return base_render("info.html", cookies=request.cookies.items())
+
+        return redirect(url_for("info"))
 
     return base_render("login.html", form=form)
 
 
 @app.route("/logout")
+@login_required
 def logout():
     session.clear()
+    logout_user()
     flash("You have successfully quit", "success")
     return redirect(url_for("login"))
 
 
 @app.route("/change_password", methods=["POST"])
+@login_required
 def change_password():
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-        user_login = session["user_data"].get("login")
-        db_user = db.session.query(AuthUser).filter_by(email=user_login).first()
+        db_user = db.session.query(AuthUser).filter_by(email=current_user.email).first()
 
         if db_user and db_user.verify_password(form.old_password.data):
             db_user.password = form.new_password.data
@@ -237,16 +253,18 @@ def change_password():
         else:
             form.old_password.errors.append("Enter the correct old password")
 
-    return secured_render("info.html", change_password_from=form, cookies=request.cookies.items())
+    return base_render("info.html", change_password_from=form, cookies=request.cookies.items())
 
 
 @app.route("/info")
+@login_required
 def info():
     form = ChangePasswordForm()
-    return secured_render("info.html", change_password_from=form, cookies=request.cookies.items())
+    return base_render("info.html", change_password_from=form, cookies=request.cookies.items())
 
 
 @app.route("/add_cookie", methods=["POST"])
+@login_required
 def add_cookie():
     cookie_key = request.form.get("cookie_key")
     cookie_value = request.form.get("cookie_value")
@@ -260,6 +278,7 @@ def add_cookie():
 
 
 @app.route("/remove_cookie", methods=["POST"])
+@login_required
 def remove_cookie():
     cookie_key = request.form.get("cookie_key")
 

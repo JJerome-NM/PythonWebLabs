@@ -1,0 +1,45 @@
+.main-wrapper {
+    display: flex;
+
+    flex: 1;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.main-wrapper .main {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+
+    padding: 20px 30px;
+
+    border-radius: 20px;
+
+    max-width: 50vw;
+    min-width: 25vw;
+
+    background: var(--white-gradient-revers);
+}
+
+.main div{
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.user-avatar{
+    margin: 5px;
+
+    width: 20vw;!important;
+    height: 20vw;!important;
+
+    border-radius: 100%;
+
+    background-size: cover;!important;
+}
