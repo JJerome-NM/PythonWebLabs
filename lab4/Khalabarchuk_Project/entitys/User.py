@@ -1,8 +1,9 @@
+from flask_login import UserMixin
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField, ValidationError
 from wtforms.validators import DataRequired, Length, Email, Regexp
 
-from app import db, bcrypt
+from app import db, bcrypt, login_manager
 
 
 class RegistrationForm(FlaskForm):
@@ -23,8 +24,16 @@ class RegistrationForm(FlaskForm):
     ])
     submit = SubmitField("Sign-up")
 
+    def validate_username(self, username):
+        if AuthUser.query.filter_by(username=username.data).first():
+            raise ValidationError("Username is busy")
 
-class AuthUser(db.Model):
+    def validate_email(self, email):
+        if AuthUser.query.filter_by(email=email.data).first():
+            raise ValidationError("Email is busy")
+
+
+class AuthUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(35), unique=True, nullable=False)
     username = db.Column(db.String(30), unique=True, nullable=False)
@@ -43,26 +52,6 @@ class AuthUser(db.Model):
         return bcrypt.check_password_hash(self.password_hash, password)
 
     @staticmethod
-    def validate_username(username):
-        if AuthUser.query.filter_by(username=username).first():
-            raise ValidationError("Username is busy")
-
-    @staticmethod
-    def validate_email(email):
-        if AuthUser.query.filter_by(email=email).first():
-            raise ValidationError("Email is busy")
-
-
-class User:
-
-    def __init__(self, login: str, password: str):
-        self.login = str(login)
-        self.password = password
-
-    def __eq__(self, other):
-        if isinstance(other, User):
-            return self.login == other.login and self.password == other.password
-        return False
-
-    def __hash__(self):
-        return hash((self.login, self.password))
+    @login_manager.user_loader
+    def user_loader(user_id: int):
+        return AuthUser.query.get(user_id)

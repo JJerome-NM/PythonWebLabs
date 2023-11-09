@@ -1,13 +1,10 @@
 {% extends 'portfolio-base.html' %}
 
 {% block links %}
-    {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio-main.css') }}">
 {% endblock %}
 
 {% block content %}
-    {{ super() }}
-
     <div class="main-wrapper bg-white-gradient">
         <main class="main">
             <div class="photo-wrapper">

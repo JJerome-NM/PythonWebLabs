@@ -1,7 +1,6 @@
 {% extends 'portfolio-base.html' %}
 
 {% block links %}
-    {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/info.css') }}">
 {% endblock %}
 
@@ -11,22 +10,20 @@
     <div class="main-wrapper">
         <main class="main">
             <div class="info-header">
-                <h2>Hello my dear {{ session.get("user_data", {}).get("username", "user") }}!</h2>
+                {% if current_user.is_authenticated %}
+                    <h2>Hello my dear {{ current_user.username }}!</h2>
+                {% else %}
+                    <h2>Hello my dear user!</h2>
+                {% endif %}
             </div>
 
-            {% if session.get("user_data") %}
+            {% if current_user.is_authenticated %}
                 <div class="info-logout">
                     <a class="default-submit" href="{{ url_for("logout") }}">Logout</a>
                 </div>
             {% endif %}
 
             <div class="info-main">
-                {% if session.get("cookie_message") %}
-                    <div class="cookie-message">
-                        <p>{{ session.pop("cookie_message") }}</p>
-                    </div>
-                {% endif %}
-
                 <div class="add-remove-block">
                     <form class="form-block" action="{{ url_for("add_cookie") }}" method="post">
                         <div class="form-row">
