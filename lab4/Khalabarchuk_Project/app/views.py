@@ -1,12 +1,10 @@
 import datetime
-import json
 import platform
 
 from flask import render_template, request, session, redirect, url_for, make_response, flash
 from flask_login import login_user, login_required, current_user, logout_user
-from wtforms import ValidationError
 
-from app import app, bcrypt
+from app import app
 from app import db
 from entitys.Login import LoginForm, ChangePasswordForm
 from entitys.ToDo import ToDo, ToDoForm
@@ -73,12 +71,6 @@ SKILLS_LIST = list([{
 
 def base_render(template: str, **context):
     return render_template(template, about_os=platform.platform(), user_agent_info=request.user_agent.string, **context)
-
-
-# def secured_render(template: str, **context):
-#     if session.get("user_data") is None:
-#         return redirect(url_for("login"))
-#     return base_render(template, **context)
 
 
 @app.route("/users")
@@ -163,30 +155,10 @@ def sign_up():
     reg_form = RegistrationForm()
 
     if reg_form.validate_on_submit():
-        validation_error = False
-
-        try:
-            AuthUser.validate_email(reg_form.email.data)
-        except ValidationError:
-            validation_error = True
-            reg_form.username.errors.append("Username is busy")
-
-        try:
-            AuthUser.validate_username(reg_form.email.data)
-        except ValidationError:
-            validation_error = True
-            reg_form.email.errors.append("Email is busy")
-
-        if validation_error:
-            return base_render("sign_up.html", reg_form=reg_form)
-
-        try:
-            user = AuthUser(email=reg_form.email.data, username=reg_form.username.data,
-                                password=reg_form.password.data)
-            db.session.add(user)
-            db.session.commit()
-        except Exception:
-            flash("Something want wrong", 'danger')
+        user = AuthUser(email=reg_form.email.data, username=reg_form.username.data,
+                        password=reg_form.password.data)
+        db.session.add(user)
+        db.session.commit()
 
         flash('You have successfully registered', 'success')
         return redirect(url_for("login"))
@@ -195,6 +167,7 @@ def sign_up():
 
 
 @app.route("/account")
+@login_required
 def account():
     return base_render("account.html")
 
@@ -217,13 +190,8 @@ def login():
 
         login_user(db_user, remember=form.remember.data)
 
-        if form.remember.data:
-            flash("You have successfully signed-in", "success")
-        else:
-            session.pop("user_data", None)
-            flash("You are logged in without remembering", "warning")
-
-        return redirect(url_for("info"))
+        flash("You have successfully signed-in", "success")
+        return redirect(url_for("account"))
 
     return base_render("login.html", form=form)
 

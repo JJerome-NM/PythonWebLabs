@@ -24,6 +24,14 @@ class RegistrationForm(FlaskForm):
     ])
     submit = SubmitField("Sign-up")
 
+    def validate_username(self, username):
+        if AuthUser.query.filter_by(username=username.data).first():
+            raise ValidationError("Username is busy")
+
+    def validate_email(self, email):
+        if AuthUser.query.filter_by(email=email.data).first():
+            raise ValidationError("Email is busy")
+
 
 class AuthUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,16 +50,6 @@ class AuthUser(db.Model, UserMixin):
 
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
-
-    @staticmethod
-    def validate_username(username):
-        if AuthUser.query.filter_by(username=username).first():
-            raise ValidationError("Username is busy")
-
-    @staticmethod
-    def validate_email(email):
-        if AuthUser.query.filter_by(email=email).first():
-            raise ValidationError("Email is busy")
 
     @staticmethod
     @login_manager.user_loader
