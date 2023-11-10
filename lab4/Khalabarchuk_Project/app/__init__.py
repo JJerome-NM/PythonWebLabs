@@ -23,6 +23,9 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
-login_manager.login_message = "Вам н"
+login_manager.login_message = "You need to be logged-in to access this page"
 
 from app import views
+from app.controller import CommentController
+from app.controller import CookieController
+from app.controller import UserController
