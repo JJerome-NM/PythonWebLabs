@@ -47,6 +47,8 @@ def account():
 
         db.session.commit()
 
+        flash('Your account information has been successfully updated', 'success')
+
     else:
         change_user_details_form.username.data = current_user.username
         change_user_details_form.email.data = current_user.email
