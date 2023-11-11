@@ -4,7 +4,7 @@
             {% if field.label is defined and field.label.text %}
                 <dt class="w-100 d-flex flex-row justify-content-center align-items-center">{{ field.label(class="control-label") }}
             {% endif %}
-            {{ field(class="default-input mx-4", **kwargs) | safe }}
+            {{ field(class="default-input mx-4", tabindex=1, **kwargs) | safe }}
         </div>
 
     {% else %}
@@ -12,7 +12,7 @@
             <dt class="w-100">{{ field.label(class="control-label") }}
         {% endif %}
         <div class="form-field-row">
-            {{ field(class="default-input", **kwargs) | safe }}
+            {{ field(class="default-input", tabindex=1, **kwargs) | safe }}
         </div>
     {% endif %}
     {% if field.errors %}

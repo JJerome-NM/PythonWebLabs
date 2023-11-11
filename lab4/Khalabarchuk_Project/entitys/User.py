@@ -1,36 +1,13 @@
+import datetime
+import os.path
+import secrets
+
 from flask_login import UserMixin
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField, ValidationError
-from wtforms.validators import DataRequired, Length, Email, Regexp
+
+from PIL import Image
 
 from app import db, bcrypt, login_manager
-
-
-class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[
-        DataRequired("This field is required"),
-        Length(4, 30, "The length must be greater than 4 and less than 30"),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, 'Nickname can include only letters, numbers, underscore and a dot')
-
-    ])
-    email = EmailField('Email(Login)', validators=[DataRequired("This field is required")])
-    password = PasswordField('Password', validators=[
-        DataRequired("This field is required"),
-        Length(min=4, max=30, message="The length must be greater than 4 and less than 30")
-    ])
-    confirm_password = PasswordField('Confirm password', validators=[
-        DataRequired("This field is required"),
-        Length(min=4, max=30, message="The length must be greater than 4 and less than 30")
-    ])
-    submit = SubmitField("Sign-up")
-
-    def validate_username(self, username):
-        if AuthUser.query.filter_by(username=username.data).first():
-            raise ValidationError("Username is busy")
-
-    def validate_email(self, email):
-        if AuthUser.query.filter_by(email=email.data).first():
-            raise ValidationError("Email is busy")
+from config import AVATARS_DIR_PATH, AVATAR_DEFAULT
 
 
 class AuthUser(db.Model, UserMixin):
@@ -38,7 +15,9 @@ class AuthUser(db.Model, UserMixin):
     email = db.Column(db.String(35), unique=True, nullable=False)
     username = db.Column(db.String(30), unique=True, nullable=False)
     password_hash = db.Column(db.String(60), unique=False, nullable=False)
-    avatar_image = db.Column(db.String(30), nullable=True, default="default.png")
+    avatar_image = db.Column(db.String(30), nullable=True, default=AVATAR_DEFAULT)
+    about_me = db.Column(db.String(500), nullable=True, default="")
+    last_seen = db.Column(db.DateTime, nullable=True, default=datetime.datetime.now().replace(microsecond=0))
 
     @property
     def password(self):
@@ -51,7 +30,36 @@ class AuthUser(db.Model, UserMixin):
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
 
+    def set_avatar_image(self, new_image):
+        new_avatar_name = AuthUser.save_new_user_avatar(new_image)
+        if self.avatar_image != AVATAR_DEFAULT:
+            AuthUser.delete_old_user_avatar(self.avatar_image)
+
+        self.avatar_image = new_avatar_name
+
     @staticmethod
     @login_manager.user_loader
     def user_loader(user_id: int):
         return AuthUser.query.get(user_id)
+
+    @staticmethod
+    def delete_old_user_avatar(picture_name: str):
+        avatar_path = os.path.join(AVATARS_DIR_PATH, picture_name)
+
+        if os.path.exists(avatar_path):
+            os.remove(avatar_path)
+
+    @staticmethod
+    def save_new_user_avatar(picture) -> str:
+        avatar_hex = secrets.token_hex(20)
+
+        f_name, f_ext = os.path.splitext(picture.filename)
+        avatar_file_name = f"{avatar_hex}{f_ext}"
+        avatar_path = os.path.join(AVATARS_DIR_PATH, avatar_file_name)
+
+        out_size = (1024, 1024)
+        image = Image.open(picture)
+        image.thumbnail(out_size)
+        image.save(avatar_path)
+
+        return avatar_file_name
