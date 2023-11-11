@@ -5,23 +5,37 @@
 {% endblock %}
 
 {% block content %}
-    <div class="main-wrapper">
-        <div class="user-avatar"
-             style="background-image: url('{{ url_for('static', filename='images/users-avatars/' + current_user.avatar_image) }}')"
-        >
-        </div>
-        <h2 style="font-weight: 600">
-            {{ current_user.username }}
-        </h2>
-        <main class="main">
-            <div class="d-flex flex-row align-items-center justify-content-center">
-                <label for="username">Username:</label>
-                <div id="username">{{ current_user.username }}</div>
-            </div>
+    {% from "render-filed.html" import render_field %}
 
-            <div class="d-flex flex-row align-items-center justify-content-center">
-                <label for="email">Email:</label>
-                <div id="email">{{ current_user.email }}</div>
+    <div class="main-wrapper">
+        <main class="main">
+            <div class="main-left">
+                <div class="user-avatar"
+                     style="background-image: url('{{ url_for('static', filename='users-avatars/' + current_user.avatar_image) }}')"
+                >
+                </div>
+                <h2 style="font-weight: 600">
+                    🎉{{ current_user.username }}👑
+                </h2>
+                <p>Last seen: {{ current_user.last_seen }}</p>
+            </div>
+            <div class="">
+                <form action="{{ url_for("account") }}"
+                      method="post"
+                      class="login-form w-100 bg-white-gradient-revers"
+                      novalidate
+                      enctype="multipart/form-data"
+                >
+                    {{ form.csrf_token }}
+                    <div> {{ render_field(form.username) }} </div>
+                    <div> {{ render_field(form.email) }} </div>
+                    <div> {{ render_field(form.avatar_image) }} </div>
+                    <div> {{ render_field(form.about_me) }} </div>
+                    <div> {{ render_field(form.new_password) }} </div>
+                    <div> {{ render_field(form.confirm_password) }} </div>
+                    <div> {{ render_field(form.old_password) }} </div>
+                    <div class="d-flex justify-content-center align-items-center"> {{ form.submit(class="default-submit", tabindex=2) }} </div>
+                </form>
             </div>
         </main>
     </div>

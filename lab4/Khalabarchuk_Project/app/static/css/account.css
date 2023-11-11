@@ -3,7 +3,7 @@
 
     flex: 1;
 
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 
@@ -14,18 +14,11 @@
 .main-wrapper .main {
     display: flex;
 
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: start;
     align-items: start;
 
-    padding: 20px 30px;
-
-    border-radius: 20px;
-
-    max-width: 50vw;
-    min-width: 25vw;
-
-    background: var(--white-gradient-revers);
+    margin: 5vh 0;
 }
 
 .main div{
@@ -41,5 +34,26 @@
 
     border-radius: 100%;
 
+    background-position: center;
     background-size: cover;!important;
+}
+
+.login-form{
+
+    padding: 20px 30px;
+
+    border-radius: 10px;
+
+    max-width: 75vw;
+    min-width: 35vw;
+}
+
+.main-left{
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 10px 0 0;
 }

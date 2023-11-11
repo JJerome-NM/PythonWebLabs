@@ -1,4 +1,6 @@
-from flask import redirect, url_for, flash, session
+from datetime import datetime
+
+from flask import redirect, url_for, flash, session, request
 from flask_login import login_required, current_user, login_user, logout_user
 
 from app import app, db
@@ -8,7 +10,49 @@ from entitys.ToDo import ToDo
 from app.forms.ToDo import ToDoForm
 
 from entitys.User import AuthUser
-from app.forms.User import RegistrationForm
+from app.forms.User import RegistrationForm, ChangeUserDetailsForm
+
+
+@app.after_request
+def after_request(response):
+    if current_user:
+        current_user.last_seen = datetime.now().replace(microsecond=0)
+        try:
+            db.session.commit()
+        except:
+            flash('Error while update user last seen!', 'danger')
+    return response
+
+
+@app.route("/account", methods=["GET", "POST"])
+@login_required
+def account():
+    change_user_details_form = ChangeUserDetailsForm()
+
+    if change_user_details_form.validate_on_submit():
+
+        if not current_user.verify_password(change_user_details_form.old_password.data):
+            change_user_details_form.old_password.errors.append("Old pass not valid")
+            return base_render("account.html", form=change_user_details_form)
+
+        if change_user_details_form.avatar_image.data:
+            current_user.set_avatar_image(change_user_details_form.avatar_image.data)
+
+        current_user.username = change_user_details_form.username.data
+        current_user.email = change_user_details_form.email.data
+        current_user.about_me = change_user_details_form.about_me.data
+
+        if change_user_details_form.new_password.data:
+            current_user.password = change_user_details_form.new_password.data
+
+        db.session.commit()
+
+    else:
+        change_user_details_form.username.data = current_user.username
+        change_user_details_form.email.data = current_user.email
+        change_user_details_form.about_me.data = current_user.about_me
+
+    return base_render("account.html", form=change_user_details_form)
 
 
 @app.route("/users")
@@ -79,12 +123,6 @@ def sign_up():
     return base_render("sign_up.html", reg_form=reg_form)
 
 
-@app.route("/account")
-@login_required
-def account():
-    return base_render("account.html")
-
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -135,4 +173,3 @@ def change_password():
             form.old_password.errors.append("Enter the correct old password")
 
     return base_render("info.html", change_password_from=form, cookies=request.cookies.items())
-
