@@ -32,7 +32,7 @@ def account():
     if change_user_details_form.validate_on_submit():
 
         if not current_user.verify_password(change_user_details_form.old_password.data):
-            change_user_details_form.old_password.errors.append("Old pass not valid")
+            change_user_details_form.old_password.errors.append("The password you entered is not correct")
             return base_render("account.html", form=change_user_details_form)
 
         if change_user_details_form.avatar_image.data:
