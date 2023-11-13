@@ -44,10 +44,11 @@ class RegistrationForm(UserRegistrationBaseImplementationForm, FlaskForm):
 
 class ChangeUserDetailsForm(UserRegistrationBaseImplementationForm, FlaskForm):
     username = StringField('Username', validators=[
+        DataRequired("This field is required"),
         Length(4, 30, "The length must be greater than 4 and less than 30"),
         Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, 'Nickname can include only letters, numbers, underscore and a dot')
     ])
-    email = EmailField('Email(Login)', validators=[])
+    email = EmailField('Email(Login)', validators=[DataRequired("This field is required")])
     avatar_image = FileField("User avatar", validators=[
         FileAllowed(["jpg", "png", "jfif", "gif"])
     ])
