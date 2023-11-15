@@ -53,9 +53,3 @@ def account():
         change_user_details_form.about_me.data = current_user.about_me
 
     return base_render("account.html", form=change_user_details_form)
-
-
-@app.route("/users")
-@login_required
-def get_users():
-    return base_render("all-users.html", users=AuthUser.query.all())
