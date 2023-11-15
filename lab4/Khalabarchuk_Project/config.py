@@ -4,8 +4,7 @@ from os import environ
 class Config(object):
     DEBUG = False
     DEVELOPMENT = False
-    SECRET_KEY = environ.get('SECRET_KEY') or \
-                 '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
+    SECRET_KEY = environ.get('SECRET_KEY') or 'secret'
     FLASK_SECRET = SECRET_KEY
 
     # Login manager
