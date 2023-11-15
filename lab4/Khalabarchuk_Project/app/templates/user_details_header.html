@@ -5,8 +5,8 @@
 {% if not current_user.is_authenticated %}
 
     <div class="">
-        <a href="{{ url_for("login") }}">Sign-in</a>
-        <a href="{{ url_for("sign_up") }}">Sign-up</a>
+        <a href="{{ url_for("auth.login") }}">Sign-in</a>
+        <a href="{{ url_for("auth.sign_up") }}">Sign-up</a>
     </div>
 
 {% else %}
@@ -38,13 +38,13 @@
                  data-popper-placement="bottom-start"
             >
                 <h6 class="dropdown-header">User details</h6>
-                <a class="dropdown-item" href="{{ url_for('info') }}">Info</a>
-                <a class="dropdown-item" href="{{ url_for('todo_page') }}">ToDo</a>
-                <a class="dropdown-item" href="{{ url_for('get_users') }}">Users</a>
-                <a class="dropdown-item" href="{{ url_for('account') }}">Account</a>
+                <a class="dropdown-item" href="{{ url_for('common.info') }}">Info</a>
+                <a class="dropdown-item" href="{{ url_for('todo.todo_page') }}">ToDo</a>
+                <a class="dropdown-item" href="{{ url_for('auth.get_users') }}">Users</a>
+                <a class="dropdown-item" href="{{ url_for('user.account') }}">Account</a>
                 {% if current_user %}
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ url_for("logout") }}">Logout</a>
+                    <a class="dropdown-item" href="{{ url_for("auth.logout") }}">Logout</a>
                 {% endif %}
             </div>
         </div>

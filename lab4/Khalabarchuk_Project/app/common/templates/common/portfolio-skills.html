@@ -13,7 +13,7 @@
                 </div>
                 <div class="skills-list">
                     {% for index, skill in all_skills_list|enumerate %}
-                        <a class="skill" href="{{ url_for('portfolio_skills') }}/{{ index }}">{{ skill.name }}</a>
+                        <a class="skill" href="{{ url_for('common.portfolio_skills') }}/{{ index }}">{{ skill.name }}</a>
                     {% endfor %}
                 </div>
             {% endif %}

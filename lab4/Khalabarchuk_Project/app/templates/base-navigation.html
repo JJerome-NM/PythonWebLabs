@@ -1,12 +1,13 @@
 {% set navs = {
-"Home": url_for('portfolio_main'),
-"Projects": url_for('portfolio_projects'),
-"Contacts": url_for('portfolio_contacts'),
-"Skills": url_for('portfolio_skills'),
-"Info": url_for('info'),
-"Todo": url_for('todo_page'),
-"Comments": url_for('comments_page')
+"Home": url_for('common.portfolio_main'),
+"Projects": url_for('common.portfolio_projects'),
+"Contacts": url_for('common.portfolio_contacts'),
+"Skills": url_for('common.portfolio_skills'),
+"Info": url_for('common.info'),
+"Todo": url_for('todo.todo_page'),
+"Comments": url_for('common.comments_page')
 } %}
+
 
 <nav class="navigation">
     <ul class="nav-pages" id="navPages">

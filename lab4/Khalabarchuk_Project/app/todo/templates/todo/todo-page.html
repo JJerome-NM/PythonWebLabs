@@ -21,7 +21,7 @@
             <div class="row container">
                 <form
                         class="row todo-add-part d-flex flex-row align-items-center"
-                        action="{{ url_for("add_todo") }}"
+                        action="{{ url_for("todo.add_todo") }}"
                         METHOD="post"
                         novalidate
                 >
@@ -50,8 +50,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="{{ url_for("update_todo", id=todo.id) }}" class="btn btn-success">Update</a>
-                                    <a href="{{ url_for("delete_todo", id=todo.id) }}" class="btn btn-danger ms-1">Delete</a>
+                                    <a href="{{ url_for("todo.update_todo", id=todo.id) }}" class="btn btn-success">Update</a>
+                                    <a href="{{ url_for("todo.delete_todo", id=todo.id) }}" class="btn btn-danger ms-1">Delete</a>
                                 </td>
                             </tr>
                         {% endfor %}

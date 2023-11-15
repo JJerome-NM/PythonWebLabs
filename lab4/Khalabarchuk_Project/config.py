@@ -6,7 +6,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Login manager
 
-LOGIN_MANAGER_LOGIN_VIEW = "login"
+LOGIN_MANAGER_LOGIN_VIEW = "auth.login"
 LOGIN_MANAGER_LOGIN_MESSAGE_CATEGORY = "info"
 LOGIN_MANAGER_LOGIN_MESSAGE = "You need to be logged-in to access this page"
 

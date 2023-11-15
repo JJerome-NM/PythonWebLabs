@@ -20,7 +20,7 @@
                 <p>Last seen: {{ current_user.last_seen }}</p>
             </div>
             <div class="">
-                <form action="{{ url_for("account") }}"
+                <form action="{{ url_for("user.account") }}"
                       method="post"
                       class="login-form w-100 bg-white-gradient-revers"
                       novalidate
