@@ -6,56 +6,47 @@ from flask_login import LoginManager
 
 from config import Config
 
-def enumerate_filter(iterable):
-    return enumerate(iterable)
+from .common_logic import enumerate_filter
 
 
-config: Config = Config.get_config()
-
-app = Flask(__name__)
-app.config.from_object(config)
-app.jinja_env.filters['enumerate'] = enumerate_filter
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
-
-login_manager.login_view = config.LOGIN_MANAGER_LOGIN_VIEW
-login_manager.login_message_category = config.LOGIN_MANAGER_LOGIN_MESSAGE_CATEGORY
-login_manager.login_message = config.LOGIN_MANAGER_LOGIN_MESSAGE
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
 
 
-def create_app(config_class):
-    app_with_bp = Flask(__name__, instance_relative_config=True)
+def create_app(config_class=Config.get_config()):
+    app = Flask(__name__, instance_relative_config=True)
 
-    app_with_bp.config.from_object(config_class)
+    app.config.from_object(config_class)
 
-    app_with_bp.secret_key = b"secret"
+    db.init_app(app)
 
-    app_with_bp.jinja_env.filters['enumerate'] = enumerate_filter
+    Migrate(app, db)
 
-    with app_with_bp.app_context():
-        db.init_app(app_with_bp)
-        bcrypt.init_app(app_with_bp)
-        login_manager.init_app(app_with_bp)
+    bcrypt.init_app(app)
+
+    app.jinja_env.filters['enumerate'] = enumerate_filter
+
+    login_manager.init_app(app)
+    login_manager.login_view = config_class.LOGIN_MANAGER_LOGIN_VIEW
+    login_manager.login_message_category = config_class.LOGIN_MANAGER_LOGIN_MESSAGE_CATEGORY
+    login_manager.login_message = config_class.LOGIN_MANAGER_LOGIN_MESSAGE
+
+    with app.app_context():
 
         from .user import user_bp
-        app_with_bp.register_blueprint(user_bp, url_prefix="/user")
+        app.register_blueprint(user_bp, url_prefix="/user")
 
         from .authentication import auth_bp
-        app_with_bp.register_blueprint(auth_bp, url_prefix="/auth")
+        app.register_blueprint(auth_bp, url_prefix="/auth")
 
         from .common import common_bp
-        app_with_bp.register_blueprint(common_bp, url_prefix="/common")
+        app.register_blueprint(common_bp, url_prefix="/common")
 
         from .cookie import cookie_bp
-        app_with_bp.register_blueprint(cookie_bp, url_prefix="/cookie")
+        app.register_blueprint(cookie_bp, url_prefix="/cookie")
 
         from .todo import todo_bp
-        app_with_bp.register_blueprint(todo_bp, url_prefix="/todo")
+        app.register_blueprint(todo_bp, url_prefix="/todo")
 
-    return app_with_bp
-
-
-app = create_app(config)
+    return app

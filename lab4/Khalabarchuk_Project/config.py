@@ -2,7 +2,7 @@ from os import environ
 
 
 class Config(object):
-    DEBUG = False
+    FLASK_DEBUG = False
     DEVELOPMENT = False
     SECRET_KEY = environ.get('SECRET_KEY') or 'secret'
     FLASK_SECRET = SECRET_KEY
@@ -27,13 +27,13 @@ class Config(object):
 
 class DevConfig(Config):
     DEVELOPMENT = True
-    DEBUG = True
+    FLASK_DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProdConfig(Config):
-    DEVELOPMENT = True
-    DEBUG = True
+    DEVELOPMENT = False
+    FLASK_DEBUG = False
 
 
 config = {
