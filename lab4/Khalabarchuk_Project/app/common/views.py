@@ -1,10 +1,16 @@
-import platform
+from datetime import datetime
 
-from flask import render_template, request
-from flask_login import login_required
+from flask import request, flash, redirect, url_for
+from flask_login import login_required, current_user
 
-from app import app
-from app.forms.Login import ChangePasswordForm
+from ..authentication.forms import ChangePasswordForm
+from app import db
+
+from ..common_logic import base_render
+
+from . import common_bp
+from .entitys import Comment
+from .forms import CommentForm
 
 PROJECTS_LIST = [{
     "photo_url": "projectNMWS.png",
@@ -64,35 +70,56 @@ SKILLS_LIST = list([{
 }])
 
 
-def base_render(template: str, **context):
-    return render_template(template, about_os=platform.platform(), user_agent_info=request.user_agent.string, **context)
+@common_bp.route("/comments")
+@login_required
+def comments_page():
+    return base_render("comments-page.html", comment_form=CommentForm(), comments=Comment.query.all())
 
 
-@app.route("/info")
+@common_bp.route("/comments", methods=["POST"])
+@login_required
+def add_comment():
+    comment_form = CommentForm()
+
+    if comment_form.validate_on_submit():
+        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        new_comment = Comment(username=current_user.username, comment=comment_form.comment.data, date=date)
+        db.session.add(new_comment)
+        db.session.commit()
+
+        flash('Comment added successfully', 'success')
+    else:
+        flash('Something went wrong while adding a comment', 'danger')
+
+    return redirect(url_for("common.comments_page"))
+
+
+@common_bp.route("/info")
 @login_required
 def info():
     form = ChangePasswordForm()
     return base_render("info.html", change_password_from=form, cookies=request.cookies.items())
 
 
-@app.route('/')
-@app.route('/portfolio')
+@common_bp.route('/')
+@common_bp.route('/portfolio')
 def portfolio_main():
     return base_render("portfolio-main.html")
 
 
-@app.route('/projects')
+@common_bp.route('/projects')
 def portfolio_projects():
     return base_render("portfolio-projects.html", projects_list=PROJECTS_LIST)
 
 
-@app.route('/contacts')
+@common_bp.route('/contacts')
 def portfolio_contacts():
     return base_render("portfolio-contacts.html", contacts=CONTACTS)
 
 
-@app.route('/skills')
-@app.route('/skills/<int:id>')
+@common_bp.route('/skills')
+@common_bp.route('/skills/<int:id>')
 def portfolio_skills(id: int = None):
     if id is not None:
         return base_render("portfolio-skills.html", selected_skill=SKILLS_LIST[id])

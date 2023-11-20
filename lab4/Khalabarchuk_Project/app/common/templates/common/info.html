@@ -1,7 +1,7 @@
 {% extends 'portfolio-base.html' %}
 
 {% block links %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/info.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('common.static', filename='css/info.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -19,13 +19,13 @@
 
             {% if current_user.is_authenticated %}
                 <div class="info-logout">
-                    <a class="default-submit" href="{{ url_for("logout") }}">Logout</a>
+                    <a class="default-submit" href="{{ url_for("auth.logout") }}">Logout</a>
                 </div>
             {% endif %}
 
             <div class="info-main">
                 <div class="add-remove-block">
-                    <form class="form-block" action="{{ url_for("add_cookie") }}" method="post">
+                    <form class="form-block" action="{{ url_for("cookie.add_cookie") }}" method="post">
                         <div class="form-row">
                             <label for="cookie_key">
                                 Key
@@ -74,7 +74,7 @@
 
                     </div>
 
-                    <form class="form-block" action="{{ url_for("remove_cookie") }}" method="post">
+                    <form class="form-block" action="{{ url_for("cookie.remove_cookie") }}" method="post">
                         <div class="form-row">
                             <label for="cookie_key">
                                 Key
@@ -86,12 +86,12 @@
                             <button type="submit" class="default-submit">Remove cookie</button>
                         </div>
                     </form>
-                    <form action="{{ url_for("remove_cookie") }}" method="post" class="form-block">
+                    <form action="{{ url_for("cookie.remove_cookie") }}" method="post" class="form-block">
                         <button type="submit" class="default-submit">Remove all cookie</button>
                     </form>
 
                     {% if change_password_from %}
-                        <form class="form-block change-pass-form" action="{{ url_for("change_password") }}"
+                        <form class="form-block change-pass-form" action="{{ url_for("auth.change_password") }}"
                               method="post" novalidate>
                             {{ change_password_from.csrf_token }}
                             <div class="form-row form-input"> {{ render_field(change_password_from.old_password) }} </div>

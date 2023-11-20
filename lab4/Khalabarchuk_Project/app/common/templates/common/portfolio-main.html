@@ -1,7 +1,7 @@
 {% extends 'portfolio-base.html' %}
 
 {% block links %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/portfolio-main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('common.static', filename='css/portfolio-main.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
                         Blanditiis, magnam!
                     </h3>
                 </div>
-                <a class="projects-button default-button" href="{{ url_for('portfolio_projects') }}">Projects</a>
+                <a class="projects-button default-button" href="{{ url_for('common.portfolio_projects') }}">Projects</a>
             </div>
         </main>
     </div>

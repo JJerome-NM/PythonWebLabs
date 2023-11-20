@@ -6,8 +6,7 @@ from flask_login import UserMixin
 
 from PIL import Image
 
-from app import db, bcrypt, login_manager
-from config import AVATARS_DIR_PATH, AVATAR_DEFAULT
+from app import db, bcrypt, login_manager, config
 
 
 class AuthUser(db.Model, UserMixin):
@@ -15,7 +14,7 @@ class AuthUser(db.Model, UserMixin):
     email = db.Column(db.String(35), unique=True, nullable=False)
     username = db.Column(db.String(30), unique=True, nullable=False)
     password_hash = db.Column(db.String(60), unique=False, nullable=False)
-    avatar_image = db.Column(db.String(30), nullable=True, default=AVATAR_DEFAULT)
+    avatar_image = db.Column(db.String(30), nullable=True, default=config.AVATAR_DEFAULT)
     about_me = db.Column(db.String(500), nullable=True, default="")
     last_seen = db.Column(db.DateTime, nullable=True, default=datetime.datetime.now().replace(microsecond=0))
 
@@ -32,7 +31,7 @@ class AuthUser(db.Model, UserMixin):
 
     def set_avatar_image(self, new_image):
         new_avatar_name = AuthUser.save_new_user_avatar(new_image)
-        if self.avatar_image != AVATAR_DEFAULT:
+        if self.avatar_image != config.AVATAR_DEFAULT:
             AuthUser.delete_old_user_avatar(self.avatar_image)
 
         self.avatar_image = new_avatar_name
@@ -44,7 +43,7 @@ class AuthUser(db.Model, UserMixin):
 
     @staticmethod
     def delete_old_user_avatar(picture_name: str):
-        avatar_path = os.path.join(AVATARS_DIR_PATH, picture_name)
+        avatar_path = os.path.join(config.AVATARS_DIR_PATH, picture_name)
 
         if os.path.exists(avatar_path):
             os.remove(avatar_path)
@@ -55,7 +54,7 @@ class AuthUser(db.Model, UserMixin):
 
         f_name, f_ext = os.path.splitext(picture.filename)
         avatar_file_name = f"{avatar_hex}{f_ext}"
-        avatar_path = os.path.join(AVATARS_DIR_PATH, avatar_file_name)
+        avatar_path = os.path.join(config.AVATARS_DIR_PATH, avatar_file_name)
 
         out_size = (1024, 1024)
         image = Image.open(picture)
