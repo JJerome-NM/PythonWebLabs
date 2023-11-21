@@ -94,4 +94,3 @@ class ChangePasswordForm(FlaskForm):
         Length(min=4, max=10, message="The length must be greater than 3 and less than 10")
     ])
     submit = SubmitField("Change password")
-

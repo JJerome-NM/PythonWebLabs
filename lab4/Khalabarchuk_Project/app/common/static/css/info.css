@@ -98,7 +98,7 @@
     font-weight: 600;
 }
 
-.login-form .form-row {
+.post-form .form-row {
     display: flex;
 
     flex-direction: column;

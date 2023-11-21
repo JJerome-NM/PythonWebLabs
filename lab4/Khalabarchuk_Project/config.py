@@ -16,6 +16,10 @@ class Config(object):
     AVATARS_DIR_PATH = "./app/static/users-avatars"
     AVATAR_DEFAULT = "default.png"
 
+    # Posts images
+    POST_IMAGES_DIR_PATH = "./app/static/users-avatars"
+    POST_IMAGE_DEFAULT = "post_default.png"
+
     # SQLALCHEMY
     SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI') or 'sqlite:///db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

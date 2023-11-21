@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
-from ..authentication.forms import ChangePasswordForm
+# from ..authentication.forms import ChangePasswordForm
 from app import db
 
 from ..common_logic import base_render
@@ -98,8 +98,7 @@ def add_comment():
 @common_bp.route("/info")
 @login_required
 def info():
-    form = ChangePasswordForm()
-    return base_render("info.html", change_password_from=form, cookies=request.cookies.items())
+    return base_render("info.html", cookies=request.cookies.items())
 
 
 @common_bp.route('/')
