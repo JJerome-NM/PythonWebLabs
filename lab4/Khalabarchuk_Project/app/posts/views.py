@@ -25,23 +25,27 @@ def create_post():
         db.session.add(post)
         db.session.commit()
 
+        return redirect(url_for("posts.get_post", id=post.id))
+
     return base_render("edit-post.html", form=form, form_title="Create post❤️‍🩹")
 
 
-@posts_bp.route("/{int:id}")
+@posts_bp.route("/<int:id>")
 @login_required
 def get_post(id):
-    return base_render("all-post.html", posts=Post.query.get(id))
+    post = Post.query.get(id)
+    return base_render("post.html", post=post)
 
 
-@posts_bp.route("/{int:id}/update", methods=["GET", "POST"])
+@posts_bp.route("/<int:id>/update", methods=["GET", "POST"])
 @login_required
 def update_post(id):
     form = CreateEditPostForm()
 
     if form.validate_on_submit():
-        post = form.build_post()
-        db.session.add(post)
+        post = Post.query.get(id)
+        post.update(form)
+
         db.session.commit()
 
     return base_render("edit-post.html", form=form, form_title="Edit post‍🐍")

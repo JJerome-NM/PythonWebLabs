@@ -1,11 +1,39 @@
 {% extends 'portfolio-base.html' %}
 
 {% block links %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('auth.static', filename='css/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('posts.static', filename='css/post.css') }}">
 {% endblock %}
 
 {% block content %}
+    {% from "render-filed.html" import render_field %}
 
-    
+    <div class="main-wrapper">
+        <main class="main">
+            <div class="post-wrapper">
+                <div class="post-title-wrapper">
+                    <div class="post-image"
+                         style="background-image:
+                                 url('{{ url_for('static', filename='post-images/' + post.image) }}')"
+                    ></div>
+                    <div class="post-title">
+                        {{ post.title }}
+                    </div>
+                </div>
+                <div class="post-body">
+                    <div class="post-header">
+                        <div class="post-type {{ post.type.name }}">
+                            {{ post.type.name }}
+                        </div>
+                        <div class="post-create-time">
+                            {{ post.created }}
+                        </div>
+                    </div>
+                    <div class="post-main">
+                        {{ post.text }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
 {% endblock %}

@@ -24,6 +24,13 @@ class Post(db.Model):
     enable = db.Column(db.Boolean, nullable=False, default=False)
     user_id = db.Column(db.ForeignKey("auth_user.id"), nullable=False)
 
+    def update(self, form):
+        self.title = form.title.data
+        self.text = form.text.data
+        self.image = form.image.data
+        self.type = form.type.data
+        self.enable = form.enable.data
+
     def set_avatar_image(self, new_image):
         new_image_name = Post.save_new_post_image(new_image)
         if self.image != config.POST_IMAGE_DEFAULT:

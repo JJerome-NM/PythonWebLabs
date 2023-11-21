@@ -17,7 +17,7 @@ class Config(object):
     AVATAR_DEFAULT = "default.png"
 
     # Posts images
-    POST_IMAGES_DIR_PATH = "./app/static/users-avatars"
+    POST_IMAGES_DIR_PATH = "./app/static/post-images"
     POST_IMAGE_DEFAULT = "post_default.png"
 
     # SQLALCHEMY
