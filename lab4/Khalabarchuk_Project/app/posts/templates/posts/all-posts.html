@@ -1,11 +1,50 @@
 {% extends 'portfolio-base.html' %}
 
 {% block links %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('auth.static', filename='css/all-posts.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('posts.static', filename='css/all-posts.css') }}">
 {% endblock %}
 
 {% block content %}
+    {% from "render-filed.html" import render_field %}
 
+    <div class="main-wrapper">
+        <main class="main">
+            <div class="posts-header">
+                <h3>Posts:</h3>
 
+                {% if form %}
+                    <form action="{{ url_for("posts.all_posts") }}"
+                          method="post"
+                          class="search-form"
+                          novalidate
+                    >
+                        {{ form.csrf_token }}
+                        <div> {{ render_field(form.category) }} </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            {{ form.submit(class="default-submit") }}
+                        </div>
+                    </form>
+                {% endif %}
 
+                <a href="{{ url_for("posts.create_post") }}"
+                   class="btn btn-success"
+                >
+                    Create post
+                </a>
+            </div>
+            <div class="posts">
+                {% for post in posts %}
+                    <div class="post">
+                        <div class="post-image"
+                             style="background-image:
+                                     url('{{ url_for('static', filename='post-images/' + post.image) }}')"
+                        ></div>
+                        <a href="{{ url_for("posts.get_post", id=post.id) }}">{{ post.title }}</a>
+                    </div>
+                {% else %}
+                    <p>No posts were found</p>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
 {% endblock %}

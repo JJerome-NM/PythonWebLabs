@@ -18,11 +18,31 @@
                     <div class="post-title">
                         {{ post.title }}
                     </div>
+
+                    {% if current_user.id == post.user_id %}
+                        <div class="post-buttons">
+                            <a href="{{ url_for("posts.update_post", id=post.id) }}">
+                                <button type="button" class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </a>
+                            <a href="{{ url_for("posts.delete_post", id=post.id) }}">
+                                <button type="button" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="post-body">
                     <div class="post-header">
-                        <div class="post-type {{ post.type.name }}">
+                        <div class="post-details">
+                            <div class="post-type {{ post.type.name }}">
                             {{ post.type.name }}
+                        </div>
+                        <div class="post-category">
+                            {{ post.category.name }}
+                        </div>
                         </div>
                         <div class="post-create-time">
                             {{ post.created }}
@@ -31,9 +51,15 @@
                     <div class="post-main">
                         {{ post.text }}
                     </div>
+                    <div class="post-tags">
+                        {% for tag in post.tags %}
+                            <div class="post-tag">{{ tag.name }}</div>
+                        {% else %}
+                            <p>The post does not contain tags</p>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </main>
     </div>
-
 {% endblock %}

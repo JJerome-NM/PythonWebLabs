@@ -18,7 +18,7 @@ class Config(object):
 
     # Posts images
     POST_IMAGES_DIR_PATH = "./app/static/post-images"
-    POST_IMAGE_DEFAULT = "post_default.png"
+    POST_IMAGE_DEFAULT = "post_default.gif"
 
     # SQLALCHEMY
     SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI') or 'sqlite:///db.sqlite'
@@ -31,13 +31,13 @@ class Config(object):
 
 class DevConfig(Config):
     DEVELOPMENT = True
-    FLASK_DEBUG = True
+    DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProdConfig(Config):
     DEVELOPMENT = False
-    FLASK_DEBUG = False
+    DEBUG = False
 
 
 config = {

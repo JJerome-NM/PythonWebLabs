@@ -19,10 +19,16 @@
 
     border-radius: 30px;
 
+    min-width: 25vw;
+
     background: var(--white-gradient-revers);
 }
 
-.post-form .form-header, .form-footer {
+.login-form{
+    min-width: 25vw;
+}
+
+.login-form .form-header, .form-footer {
     display: flex;
 
     flex-direction: column;
@@ -33,32 +39,11 @@
     font-weight: 800;
 }
 
-.post-form .form-header p {
+.login-form .form-header p {
     margin: 0 0 20px 0;
 }
 
-.post-form .form-row {
-    display: flex;
-
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-
-    min-width: 30vw;
-
-    margin: 20px;
-}
-
-.post-form .form-input dd {
-    width: 100%;
-}
-
-.post-form .form-row label {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.post-form .checkbox {
+.login-form .checkbox {
     display: flex;
 
     flex-direction: row;
@@ -67,15 +52,10 @@
 }
 
 
-.post-form .checkbox dt {
+.login-form .checkbox dt {
     margin-right: 10px;
 }
 
-.post-form .checkbox dd {
-    align-items: center;
-}
-
-.post-form .form-submit {
-    justify-content: center;
+.login-form .checkbox dd {
     align-items: center;
 }

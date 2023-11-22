@@ -54,3 +54,21 @@
 .post-form .checkbox dd {
     align-items: center;
 }
+
+.tags{
+    display: flex;
+
+    flex-direction: row;
+}
+
+.tags li{
+    list-style: none;
+
+    margin: 0 2px;
+}
+
+.tags li:first-child{
+    list-style: none;
+
+    margin-left: 0;
+}
