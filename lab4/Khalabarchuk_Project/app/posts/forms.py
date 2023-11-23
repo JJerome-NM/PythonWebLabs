@@ -1,8 +1,9 @@
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
+from flask_wtf.form import _Auto
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
 from wtforms.widgets import CheckboxInput, ListWidget
 
 from .entitys import PostType, Post, Category, Tag
@@ -14,6 +15,10 @@ class CreateEditCategory(FlaskForm):
         Length(4, 40, "The length must be greater than 4 and less than 90")
     ])
     submit = SubmitField("Save")
+
+    def validate_name(self, field):
+        if Category.query.filter(Category.name.ilike(field.data)).first():
+            raise ValidationError("The category with this name is already busy")
 
 
 class SearchPostForm(FlaskForm):
@@ -43,6 +48,11 @@ class CreateEditPostForm(FlaskForm):
                                option_widget=CheckboxInput(), widget=ListWidget(prefix_label=False))
     enable = BooleanField("Published")
     submit = SubmitField("Save")
+
+    def __init__(self, *args, **kwargs):
+        super(CreateEditPostForm, self).__init__(*args, **kwargs)
+        self.category.choices = [(c.id, c.name) for c in Category.query.all()]
+        self.tags.choices = [(t.name, t.name) for t in Tag.query.all()]
 
     def build_post(self) -> Post:
         post = Post(

@@ -120,6 +120,8 @@ def category_update(id):
         category.name = form.name.data
         db.session.commit()
         flash("You have successfully update a category", "success")
+    else:
+        flash("A category with this name already exists", "danger")
 
     return redirect(url_for("posts.categories"))
 
@@ -142,6 +144,8 @@ def category_create():
 
         db.session.add(category)
         db.session.commit()
+        flash("Category successfully established", "success")
+    else:
+        flash("A category with this name already exists", "danger")
 
-    flash("Category successfully established", "success")
     return redirect(url_for("posts.categories"))
