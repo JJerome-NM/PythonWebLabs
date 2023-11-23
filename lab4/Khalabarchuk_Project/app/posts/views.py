@@ -1,5 +1,6 @@
 from flask import redirect, url_for, flash, request
 from flask_login import login_required
+from sqlalchemy import desc
 
 from .forms import *
 from .entitys import *
@@ -16,11 +17,11 @@ def all_posts():
 
     if request.method == 'POST' and form.validate():
         if form.category.data == "ANY":
-            posts = Post.query.all()
+            posts = Post.query.order_by(desc(Post.created))
         else:
-            posts = Post.query.filter(Post.category.has(id=form.category.data)).all()
+            posts = Post.query.filter(Post.category.has(id=form.category.data)).order_by(desc(Post.created))
     else:
-        posts = Post.query.all()
+        posts = Post.query.order_by(desc(Post.created))
 
     return base_render("all-posts.html", posts=posts, form=form)
 
