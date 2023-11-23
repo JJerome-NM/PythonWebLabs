@@ -16,10 +16,10 @@
                         Login here🎯
                     </p>
                 </div>
-                <div class="form-row form-input"> {{ render_field(form.login) }} </div>
-                <div class="form-row form-input"> {{ render_field(form.password) }} </div>
-                <div class="form-row checkbox"> {{ render_field(form.remember) }} </div>
-                <div class="form-row form-submit"> {{ form.submit(class="default-submit") }} </div>
+                <div> {{ render_field(form.login) }} </div>
+                <div> {{ render_field(form.password) }} </div>
+                <div class="checkbox"> {{ render_field(form.remember) }} </div>
+                <div class="d-flex justify-content-center align-items-center"> {{ form.submit(class="default-submit") }} </div>
             </form>
         </main>
     </div>

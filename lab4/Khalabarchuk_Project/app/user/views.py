@@ -4,7 +4,6 @@ from flask import flash
 from flask_login import login_required, current_user
 
 from app import db
-from ..authentication.entitys import AuthUser
 from ..common_logic import base_render
 from .forms import ChangeUserDetailsForm
 

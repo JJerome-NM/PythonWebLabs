@@ -1,0 +1,53 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('posts.static', filename='css/all-categories.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% from "render-filed.html" import render_field %}
+
+    <div class="main-wrapper">
+        <div class="main">
+            <h3>Categories🧠</h3>
+            <main class="categories-wrapper">
+                {% for category in categories %}
+                    <form action="{{ url_for("posts.category_update", id=category.id) }}"
+                          method="post"
+                          class="category-form"
+                          novalidate
+                    >
+                        {{ category.form.csrf_token }}
+                        <div> {{ render_field(category.form.name) }} </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            {{ category.form.submit(class="btn btn-primary") }}
+                        </div>
+                        <a href="{{ url_for("posts.category_delete", id=category.id) }}">
+                            <button type="button" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </a>
+                    </form>
+                {% else %}
+                    <p>Categories not found</p>
+                {% endfor %}
+            </main>
+        </div>
+        <div class="main">
+            <h3>Create category🦜</h3>
+            <main class="categories-wrapper">
+                <form action="{{ url_for("posts.category_create") }}"
+                      method="post"
+                      class=""
+                      novalidate
+                >
+                    {{ form.csrf_token }}
+                    <div> {{ render_field(form.name) }} </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        {{ form.submit(class="default-submit") }}
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+{% endblock %}

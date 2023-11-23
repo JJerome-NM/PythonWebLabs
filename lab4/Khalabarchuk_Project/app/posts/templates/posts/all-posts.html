@@ -1,0 +1,88 @@
+{% extends 'portfolio-base.html' %}
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('posts.static', filename='css/all-posts.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% from "render-filed.html" import render_field %}
+
+    <div class="main-wrapper">
+        <main class="main">
+            <div class="posts-header">
+                <h3>🕊️Posts:</h3>
+
+                {% if form %}
+                    <form action="{{ url_for("posts.all_posts") }}"
+                          method="post"
+                          class="search-form"
+                          novalidate
+                    >
+                        {{ form.csrf_token }}
+                        <div> {{ render_field(form.category) }} </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            {{ form.submit(class="default-submit") }}
+                        </div>
+                    </form>
+                {% endif %}
+
+                <a href="{{ url_for("posts.create_post") }}"
+                   class="btn btn-success"
+                >
+                    Create post
+                </a>
+            </div>
+            <div class="posts">
+                {% for post in posts.items %}
+                    <div class="post">
+                        <div class="d-flex flex-direction-row">
+                            <a class="post-title" href="{{ url_for("posts.get_post", id=post.id) }}">
+                                <div class="post-image"
+                                     style="background-image:
+                                             url('{{ url_for('static', filename='post-images/' + post.image) }}')"
+                                ></div>
+                            </a>
+
+                            <a class="post-title"
+                               href="{{ url_for("posts.get_post", id=post.id) }}">{{ post.title }}</a>
+                        </div>
+                        <div>
+                            <a class="post-title"
+                               href="{{ url_for("posts.get_post", id=post.id) }}">
+                                <button type="button" class="btn btn-primary">
+                                    Show
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No posts were found</p>
+                {% endfor %}
+            </div>
+        </main>
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item {% if not posts.has_prev %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(".all_posts", page=posts.prev_num, category=form.category.data) }}"
+                       tabindex="-1">Previous</a>
+                </li>
+
+                {% for page in posts.iter_pages(left_edge=2, left_current=1, right_current=1, right_edge=2) %}
+                    <li class="page-item {% if page == posts.page %}active{% endif %}">
+                        <a class="page-link"
+                           href="{{ url_for("posts.all_posts", page=page, category=form.category.data) }}">
+                            {{ page or "..." }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+                <li class="page-item {% if not posts.has_next %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(".all_posts", page=posts.next_num, category=form.category.data) }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

@@ -2,7 +2,7 @@ from os import environ
 
 
 class Config(object):
-    DEBUG = False
+    FLASK_DEBUG = False
     DEVELOPMENT = False
     SECRET_KEY = environ.get('SECRET_KEY') or 'secret'
     FLASK_SECRET = SECRET_KEY
@@ -16,9 +16,17 @@ class Config(object):
     AVATARS_DIR_PATH = "./app/static/users-avatars"
     AVATAR_DEFAULT = "default.png"
 
+    # Posts images
+    POST_IMAGES_DIR_PATH = "./app/static/post-images"
+    POST_IMAGE_DEFAULT = "post_default.gif"
+
     # SQLALCHEMY
     SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI') or 'sqlite:///db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    #SQLALCHEMY Pagination
+
+    POSTS_MAX_PER_PAGE = 6
 
     @staticmethod
     def get_config():
@@ -32,8 +40,8 @@ class DevConfig(Config):
 
 
 class ProdConfig(Config):
-    DEVELOPMENT = True
-    DEBUG = True
+    DEVELOPMENT = False
+    DEBUG = False
 
 
 config = {
