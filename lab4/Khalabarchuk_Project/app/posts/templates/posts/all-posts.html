@@ -33,18 +33,56 @@
                 </a>
             </div>
             <div class="posts">
-                {% for post in posts %}
+                {% for post in posts.items %}
                     <div class="post">
-                        <div class="post-image"
-                             style="background-image:
-                                     url('{{ url_for('static', filename='post-images/' + post.image) }}')"
-                        ></div>
-                        <a href="{{ url_for("posts.get_post", id=post.id) }}">{{ post.title }}</a>
+                        <div class="d-flex flex-direction-row">
+                            <a class="post-title" href="{{ url_for("posts.get_post", id=post.id) }}">
+                                <div class="post-image"
+                                     style="background-image:
+                                             url('{{ url_for('static', filename='post-images/' + post.image) }}')"
+                                ></div>
+                            </a>
+
+                            <a class="post-title"
+                               href="{{ url_for("posts.get_post", id=post.id) }}">{{ post.title }}</a>
+                        </div>
+                        <div>
+                            <a class="post-title"
+                               href="{{ url_for("posts.get_post", id=post.id) }}">
+                                <button type="button" class="btn btn-primary">
+                                    Show
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 {% else %}
                     <p>No posts were found</p>
                 {% endfor %}
             </div>
         </main>
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item {% if not posts.has_prev %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(".all_posts", page=posts.prev_num, category=form.category.data) }}"
+                       tabindex="-1">Previous</a>
+                </li>
+
+                {% for page in posts.iter_pages(left_edge=2, left_current=1, right_current=1, right_edge=2) %}
+                    <li class="page-item {% if page == posts.page %}active{% endif %}">
+                        <a class="page-link"
+                           href="{{ url_for("posts.all_posts", page=page, category=form.category.data) }}">
+                            {{ page or "..." }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+                <li class="page-item {% if not posts.has_next %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for(".all_posts", page=posts.next_num, category=form.category.data) }}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 {% endblock %}

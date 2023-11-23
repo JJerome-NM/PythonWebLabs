@@ -55,6 +55,11 @@
     display: flex;
 
     flex-direction: row;
+
+    justify-content: space-between;
+    align-items: end;
+
+    margin: 5px;
 }
 
 .post-buttons a {
@@ -68,4 +73,12 @@
 
     justify-content: center;
     align-items: center;
+}
+
+.post-title{
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    text-decoration: none;
 }

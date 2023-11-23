@@ -14,14 +14,16 @@ from . import posts_bp
 @login_required
 def all_posts():
     form = SearchPostForm()
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", config.POSTS_MAX_PER_PAGE, type=int)
+    category = request.args.get("category", "ANY") if request.method == "GET" else form.category.data
+    posts = Post.query
 
-    if request.method == 'POST' and form.validate():
-        if form.category.data == "ANY":
-            posts = Post.query.order_by(desc(Post.created))
-        else:
-            posts = Post.query.filter(Post.category.has(id=form.category.data)).order_by(desc(Post.created))
-    else:
-        posts = Post.query.order_by(desc(Post.created))
+    if (form.validate_on_submit() or request.method == "GET") and category != "ANY":
+        form.category.data = category
+        posts = posts.filter(Post.category.has(id=form.category.data))
+
+    posts = posts.order_by(desc(Post.created)).paginate(page=page, per_page=per_page)
 
     return base_render("all-posts.html", posts=posts, form=form)
 
