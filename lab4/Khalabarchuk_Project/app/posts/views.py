@@ -25,6 +25,18 @@ def all_posts():
     return base_render("all-posts.html", posts=posts, form=form)
 
 
+@posts_bp.route("/<int:id>")
+@login_required
+def get_post(id):
+    post = Post.query.get(id)
+
+    if not post:
+        flash("Post not found", "warning")
+        return redirect(url_for("posts.all_posts"))
+
+    return base_render("post.html", post=post)
+
+
 @posts_bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create_post():
@@ -37,22 +49,11 @@ def create_post():
 
         return redirect(url_for("posts.get_post", id=post.id))
 
+    flash("Post successfully established", "success")
     return base_render("edit-post.html",
                        form=form,
                        form_title="Create post❤️‍🩹",
                        form_action=url_for("posts.create_post"))
-
-
-@posts_bp.route("/<int:id>")
-@login_required
-def get_post(id):
-    post = Post.query.get(id)
-
-    if not post:
-        flash("Post not found", "warning")
-        return redirect(url_for("posts.all_posts"))
-
-    return base_render("post.html", post=post)
 
 
 @posts_bp.route("/<int:id>/update", methods=["GET", "POST"])
@@ -71,6 +72,7 @@ def update_post(id):
 
         db.session.commit()
 
+        flash("You have successfully update a post", "success")
         return redirect(url_for("posts.get_post", id=post.id))
     else:
         form.build_edit_form(post)
@@ -93,6 +95,7 @@ def delete_post(id):
     db.session.delete(post)
     db.session.commit()
 
+    flash("Post successfully deleted", "success")
     return redirect(url_for("posts.all_posts"))
 
 
@@ -113,6 +116,7 @@ def category_update(id):
 
         category.name = form.name.data
         db.session.commit()
+        flash("You have successfully update a category", "success")
 
     return redirect(url_for("posts.categories"))
 
@@ -122,6 +126,7 @@ def category_delete(id):
     db.session.delete(db.get_or_404(Category, id))
     db.session.commit()
 
+    flash("Category successfully deleted", "success")
     return redirect(url_for("posts.categories"))
 
 
@@ -135,4 +140,5 @@ def category_create():
         db.session.add(category)
         db.session.commit()
 
+    flash("Category successfully established", "success")
     return redirect(url_for("posts.categories"))
