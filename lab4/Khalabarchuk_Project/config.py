@@ -26,7 +26,7 @@ class Config(object):
 
     #SQLALCHEMY Pagination
 
-    POSTS_MAX_PER_PAGE = 2
+    POSTS_MAX_PER_PAGE = 6
 
     @staticmethod
     def get_config():
