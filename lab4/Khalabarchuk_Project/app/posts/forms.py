@@ -8,12 +8,21 @@ from wtforms.widgets import CheckboxInput, ListWidget
 from .entitys import PostType, Post, Category, Tag
 
 
-class SearchPostForm(FlaskForm):
-    categories = Category.query.all()
-    categories.append(Category(id="ANY", name="Any"))
+class CreateEditCategory(FlaskForm):
+    name = StringField("name", validators=[
+        DataRequired("This field is required"),
+        Length(4, 40, "The length must be greater than 4 and less than 90")
+    ])
+    submit = SubmitField("Save")
 
-    category = SelectField("Category", choices=[(c.id, c.name) for c in categories], default="ANY")
+
+class SearchPostForm(FlaskForm):
+    category = SelectField("Category", default="ANY")
     submit = SubmitField("Search")
+
+    def __init__(self, *args, **kwargs):
+        super(SearchPostForm, self).__init__(*args, **kwargs)
+        self.category.choices = [(c.id, c.name) for c in Category.query.all()] + [("ANY", "Any")]
 
 
 class CreateEditPostForm(FlaskForm):

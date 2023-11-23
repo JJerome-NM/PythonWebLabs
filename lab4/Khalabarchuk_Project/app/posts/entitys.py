@@ -91,39 +91,3 @@ class Post(db.Model):
         image.save(picture_path)
 
         return picture_file_name
-
-
-class CategoryCRUD:
-
-    @staticmethod
-    def create_category(name):
-        category = Category(name=name)
-        db.session.add(category)
-        db.session.commit()
-        return category
-
-    @staticmethod
-    def read_categories():
-        return Category.query.all()
-
-    @staticmethod
-    def read_category(category_id):
-        return Category.query.get(category_id)
-
-    @staticmethod
-    def update_category(category_id, name):
-        category = Category.query.get(category_id)
-        if category:
-            category.name = name
-            db.session.commit()
-            return category
-        return None
-
-    @staticmethod
-    def delete_category(category_id):
-        category = Category.query.get(category_id)
-        if category:
-            db.session.delete(category)
-            db.session.commit()
-            return True
-        return False

@@ -55,7 +55,6 @@ def get_post(id):
     return base_render("post.html", post=post)
 
 
-
 @posts_bp.route("/<int:id>/update", methods=["GET", "POST"])
 @login_required
 def update_post(id):
@@ -88,10 +87,52 @@ def delete_post(id):
     post: Post = db.get_or_404(Post, id)
 
     if post.user_id != current_user.id:
-        flash("Ви повинні бути власником поста щоб його видалити", "danger")
+        flash("You must be the owner of the post to delete it", "danger")
         return redirect(url_for("posts.get_post", id=id))
 
     db.session.delete(post)
     db.session.commit()
 
     return redirect(url_for("posts.all_posts"))
+
+
+@posts_bp.route("/categories")
+@login_required
+def categories():
+    categories_with_forms = [{"id": c.id, "form": CreateEditCategory(name=c.name)} for c in Category.query.all()]
+    form = CreateEditCategory()
+    return base_render("all-categories.html", categories=categories_with_forms, form=form)
+
+
+@posts_bp.route("/category/<int:id>/update", methods=["POST"])
+def category_update(id):
+    form = CreateEditCategory()
+
+    if form.validate_on_submit():
+        category = db.get_or_404(Category, id)
+
+        category.name = form.name.data
+        db.session.commit()
+
+    return redirect(url_for("posts.categories"))
+
+
+@posts_bp.route("/category/<int:id>/delete", methods=["GET"])
+def category_delete(id):
+    db.session.delete(db.get_or_404(Category, id))
+    db.session.commit()
+
+    return redirect(url_for("posts.categories"))
+
+
+@posts_bp.route("/category/create", methods=["POST"])
+def category_create():
+    form = CreateEditCategory()
+
+    if form.validate_on_submit():
+        category = Category(name=form.name.data)
+
+        db.session.add(category)
+        db.session.commit()
+
+    return redirect(url_for("posts.categories"))
