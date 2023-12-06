@@ -8,6 +8,10 @@ from test.test_flask import TestBase
 class TestCommonPages(TestBase):
 
     def test_home_page(self):
+        """Test the response and content of the home page."""
+        # Ensure the home page returns a 200 status code
+        # Check for specific content and absence of unwanted content
+
         response = self.client.get(
             url_for("common.portfolio_main"),
             follow_redirects=True
@@ -19,6 +23,10 @@ class TestCommonPages(TestBase):
         self.assertIn(b'<footer class="bg-light-purple-gradient">', response.data)
 
     def test_projects_page(self):
+        """Test the response and content of the projects page."""
+        # Ensure the projects page returns a 200 status code
+        # Check for specific project-related content and absence of unwanted content
+
         response = self.client.get(
             url_for("common.portfolio_projects"),
             follow_redirects=True
@@ -29,6 +37,10 @@ class TestCommonPages(TestBase):
         self.assertNotIn(b'<footer class="bg-light-purple-gradient">', response.data)
 
     def test_contacts_page(self):
+        """Test the response and content of the contacts page."""
+        # Ensure the contacts page returns a 200 status code
+        # Check for specific contact information and links, and absence of unwanted content
+
         response = self.client.get(
             url_for("common.portfolio_contacts"),
             follow_redirects=True
@@ -41,6 +53,10 @@ class TestCommonPages(TestBase):
         self.assertNotIn(b'<footer class="bg-light-purple-gradient">', response.data)
 
     def test_skills_page(self):
+        """Test the response and content of the skills page."""
+        # Ensure the skills page returns a 200 status code
+        # Check for specific skills-related content and absence of unwanted content
+
         response = self.client.get(
             url_for("common.portfolio_skills"),
             follow_redirects=True
@@ -53,6 +69,10 @@ class TestCommonPages(TestBase):
         self.assertNotIn(b'<footer class="bg-light-purple-gradient">', response.data)
 
     def test_get_skill_page(self):
+        """Test the response and content of a specific skills page."""
+        # Ensure the specific skills page returns a 200 status code
+        # Check for specific details about the selected skill and absence of unwanted content
+
         response = self.client.get(
             url_for("common.portfolio_skills", id=0),
             follow_redirects=True
