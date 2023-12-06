@@ -33,6 +33,10 @@ class TestTodoCRUD(TestBase):
             self.assertTrue(current_user.is_authenticated)
 
     def test_todo_page(self):
+        """Test the rendering and functionality of the todo page."""
+        # Check if the todo page is rendered correctly after user login
+        # Verify the presence of necessary elements like the add todo form and links to update todos.
+
         self.test_user_login()
 
         with self.client:
@@ -51,6 +55,10 @@ class TestTodoCRUD(TestBase):
             self.assertIn(f'<a href="{url_for("todo.update_todo", id=ToDo.query.first().id)}"', response.text)
 
     def test_todo_create(self):
+        """Test the creation of a new todo."""
+        # Check if a new todo can be successfully created
+        # Verify the default status and completion state of the newly created todo.
+
         self.test_user_login()
 
         with self.client:
@@ -69,6 +77,10 @@ class TestTodoCRUD(TestBase):
             self.assertFalse(todo.completed)
 
     def test_todo_delete(self):
+        """Test the deletion of an existing todo."""
+        # Check if an existing todo can be successfully deleted
+        # Verify that the todo is no longer present in the database after deletion.
+
         self.test_user_login()
 
         with self.client:
@@ -88,6 +100,10 @@ class TestTodoCRUD(TestBase):
             self.assertIsNone(todo)
 
     def test_todo_update(self):
+        """Test the update of an existing todo."""
+        # Check if an existing todo can be successfully updated
+        # Verify that the todo's completion state is toggled correctly after the update.
+
         self.test_user_login()
 
         with self.client:
