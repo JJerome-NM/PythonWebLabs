@@ -123,6 +123,20 @@ class TestUser(TestBase):
             self.assertEqual(user.email, "test_user_new@gmail.com")
             self.assertEqual(user.about_me, "New about me")
 
+    def test_user_logout(self):
+        self.test_user_login()
+
+        with self.client:
+
+            response = self.client.get(
+                url_for("auth.logout"),
+                follow_redirects=True
+            )
+
+            self.assert200(response)
+            self.assertFalse(current_user.is_authenticated)
+
+
 
 if __name__ == '__main__':
     unittest.main()
