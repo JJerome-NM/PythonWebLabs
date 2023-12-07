@@ -3,10 +3,12 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
 
 from config import Config
 
 from .common_logic import enumerate_filter
+
 
 
 db = SQLAlchemy()
@@ -20,7 +22,6 @@ def create_app(config_class=Config.get_config()):
     app.config.from_object(config_class)
 
     db.init_app(app)
-
     bcrypt.init_app(app)
 
     app.jinja_env.filters['enumerate'] = enumerate_filter
@@ -37,7 +38,9 @@ def create_app(config_class=Config.get_config()):
         from .cookie import cookie_bp
         from .todo import todo_bp
         from .posts import posts_bp
+        from .api import api_bp
 
+        app.register_blueprint(api_bp, url_prefix="/api")
         app.register_blueprint(auth_bp, url_prefix="/auth")
         app.register_blueprint(user_bp, url_prefix="/user")
         app.register_blueprint(common_bp, url_prefix="/common")
