@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-api_todo_bp = Blueprint("api_todo", __name__)
+api_auth_bp = Blueprint("api_auth", __name__)
 
 from . import controller
