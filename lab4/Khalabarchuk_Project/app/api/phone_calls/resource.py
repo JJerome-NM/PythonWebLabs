@@ -31,7 +31,7 @@ class CRUDPhoneCallsResource(Resource):
                 "message": "Phone call not found"
             }, 404
 
-        return PhoneCallSchema(many=True).dump(call)
+        return PhoneCallSchema().dump(call)
 
     def put(self, id):
         schema = PhoneCallSchema()
@@ -60,5 +60,5 @@ class CRUDPhoneCallsResource(Resource):
         db.session.delete(call)
         db.session.commit()
 
-        return {"message": f"Phone call {call.username} deleted"}
+        return {"message": f"Phone call {call.id} deleted"}
 
