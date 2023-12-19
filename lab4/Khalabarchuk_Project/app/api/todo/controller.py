@@ -6,6 +6,7 @@ from ...todo.forms import ToDoForm
 
 from ..auth.JWTUtils import JWTUtils
 
+
 @api_todo_bp.get("/")
 @JWTUtils.verify_token
 def get_all_todos():

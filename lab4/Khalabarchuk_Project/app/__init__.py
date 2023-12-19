@@ -3,12 +3,14 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_marshmallow import Marshmallow
 
 from config import Config
 
 from .common_logic import enumerate_filter
 
 db = SQLAlchemy()
+mm = Marshmallow()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 
@@ -19,6 +21,7 @@ def create_app(config_class=Config.get_config()):
     app.config.from_object(config_class)
 
     db.init_app(app)
+    mm.init_app(app)
     bcrypt.init_app(app)
 
     app.jinja_env.filters['enumerate'] = enumerate_filter
