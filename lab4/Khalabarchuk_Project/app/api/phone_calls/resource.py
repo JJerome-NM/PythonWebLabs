@@ -2,15 +2,18 @@ from flask import request
 from flask_restful import Resource
 
 from app import db
+from app.api.auth.JWTUtils import JWTUtils
 from app.api.phone_calls.entitys import PhoneCall
 from app.api.phone_calls.schema import PhoneCallSchema
 from app.authentication.entitys import AuthUser
 
 
 class PhoneCallsResource(Resource):
+    @JWTUtils.verify_token
     def get(self):
         return PhoneCallSchema(many=True).dump(PhoneCall.query.all())
 
+    @JWTUtils.verify_token
     def post(self):
         schema = PhoneCallSchema()
         call = schema.load(request.json)
@@ -23,6 +26,7 @@ class PhoneCallsResource(Resource):
 
 class CRUDPhoneCallsResource(Resource):
 
+    @JWTUtils.verify_token
     def get(self, id):
         call = PhoneCall.query.get(id)
 
@@ -33,6 +37,7 @@ class CRUDPhoneCallsResource(Resource):
 
         return PhoneCallSchema().dump(call)
 
+    @JWTUtils.verify_token
     def put(self, id):
         schema = PhoneCallSchema()
         call = AuthUser.query.get(id)
@@ -49,6 +54,7 @@ class CRUDPhoneCallsResource(Resource):
 
         return schema.dump(call)
 
+    @JWTUtils.verify_token
     def delete(self, id):
         call = PhoneCall.query.get(id)
 
