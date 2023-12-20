@@ -15,10 +15,3 @@ class ToDo(db.Model):
         COMPLETED = "COMPLETED"
         IN_PROGRESS = "IN_PROGRESS"
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'completed': self.completed,
-            'status': self.status
-        }

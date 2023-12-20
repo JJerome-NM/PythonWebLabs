@@ -27,6 +27,9 @@ class Config(object):
     # SQLALCHEMY Pagination
     POSTS_MAX_PER_PAGE = 1
 
+    # Server
+    SERVER_NAME = "localhost:5000"
+
     @staticmethod
     def get_config():
         return config[environ.get('CONFIG') or "DEFAULT"]
