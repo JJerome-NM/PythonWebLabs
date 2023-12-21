@@ -27,3 +27,5 @@ build/
 ### Local folders ###
 
 /local-files/
+
+instance/*
