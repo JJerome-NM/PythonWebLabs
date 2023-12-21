@@ -9,6 +9,7 @@ from config import Config
 
 from .common_logic import enumerate_filter
 
+
 db = SQLAlchemy()
 mm = Marshmallow()
 bcrypt = Bcrypt()
