@@ -34,7 +34,7 @@ class Config(object):
 
 class DevConfig(Config):
     DEVELOPMENT = True
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
@@ -44,6 +44,8 @@ class ProdConfig(Config):
 
 
 class TestConfig(Config):
+    # Server
+    SERVER_NAME = "localhost:5000"
     TESTING = True
     DEBUG = True
     WTF_CSRF_ENABLED = False
