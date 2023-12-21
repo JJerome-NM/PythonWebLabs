@@ -27,9 +27,6 @@ class Config(object):
     # SQLALCHEMY Pagination
     POSTS_MAX_PER_PAGE = 1
 
-    # Server
-    SERVER_NAME = "localhost:5000"
-
     @staticmethod
     def get_config():
         return config[environ.get('CONFIG') or "DEFAULT"]
@@ -47,6 +44,8 @@ class ProdConfig(Config):
 
 
 class TestConfig(Config):
+    # Server
+    SERVER_NAME = "localhost:5000"
     TESTING = True
     DEBUG = True
     WTF_CSRF_ENABLED = False
