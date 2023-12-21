@@ -37,7 +37,7 @@ class Config(object):
 
 class DevConfig(Config):
     DEVELOPMENT = True
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 

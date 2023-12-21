@@ -37,7 +37,9 @@ def create_app(config_class=Config.get_config()):
         from .cookie import cookie_bp
         from .todo import todo_bp
         from .posts import posts_bp
+        from .api import api_bp
 
+        app.register_blueprint(api_bp, url_prefix="/api")
         app.register_blueprint(auth_bp, url_prefix="/auth")
         app.register_blueprint(user_bp, url_prefix="/user")
         app.register_blueprint(common_bp, url_prefix="/common")
