@@ -34,7 +34,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(90))
     text = db.Column(db.String(2056))
-    image = db.Column(db.String(35), nullable=False, default=config.POST_IMAGE_DEFAULT)
+    image = db.Column(db.String(60), nullable=False, default=config.POST_IMAGE_DEFAULT)
     created = db.Column(db.DateTime, nullable=True, default=datetime.now().replace(microsecond=0))
     type = db.Column(db.Enum(PostType), nullable=False, default=PostType.OTHER)
     enable = db.Column(db.Boolean, nullable=False, default=False)
