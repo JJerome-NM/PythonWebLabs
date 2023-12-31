@@ -1,0 +1,5 @@
+[phases.deploy]
+cmds = [
+  "flask db upgrade",
+  "python lab4/Khalabarchuk_Project/run.py"
+]
