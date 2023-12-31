@@ -21,7 +21,8 @@ class Config(object):
     POST_IMAGE_DEFAULT = "post_default.gif"
 
     # SQLALCHEMY
-    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI') or 'sqlite:///db.sqlite'
+    SQLALCHEMY_DATABASE_URI = (environ.get('SQLALCHEMY_DATABASE_URI') or
+                               'postgresql://postgres:postgres@localhost/postgres')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # SQLALCHEMY Pagination
