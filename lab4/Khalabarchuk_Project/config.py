@@ -26,7 +26,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # SQLALCHEMY Pagination
-    POSTS_MAX_PER_PAGE = 1
+    POSTS_MAX_PER_PAGE = (environ.get('POSTS_MAX_PER_PAGE') or 10)
 
     @staticmethod
     def get_config():
