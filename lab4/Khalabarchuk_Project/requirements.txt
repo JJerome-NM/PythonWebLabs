@@ -17,3 +17,4 @@ flask-marshmallow
 flask-swagger-ui
 marshmallow-sqlalchemy
 psycopg2
+gunicorn
