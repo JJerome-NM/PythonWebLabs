@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: JJerome-NM The best developer
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:5000
+paths:
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authentication
+      description: Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthDto"
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            'application/json':
+              schema:
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: 'Forbidden'
+          content:
+            'application/json':
+              schema:
+                properties:
+                  error:
+                    type: string
+  /api/users/:
+    get:
+      tags:
+        - User
+      summary: Get users
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserSchema"
+    post:
+      tags:
+        - User
+      summary: Create user
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/UserSchema"
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserSchema"
+  /api/user/{userId}:
+    get:
+      tags:
+        - User
+      summary: Get user by id
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: 'User ID'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserSchema'
+        '404':
+          description: 'Not Found'
+          content:
+            '*/*':
+              schema:
+                properties:
+                  message:
+                    type: string
+    put:
+      tags:
+        - User
+      summary: Update user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: 'User ID'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/UserSchema"
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserSchema"
+    delete:
+      tags:
+        - User
+      summary: Delete user by id
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: 'User ID'
+      responses:
+        '204':
+          description: 'No Content'
+        '404':
+          description: 'Not Found'
+          content:
+            '*/*':
+              schema:
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    UserAuthDto:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    UserSchema:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - email
+        - password

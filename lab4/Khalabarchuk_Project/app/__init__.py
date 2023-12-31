@@ -40,6 +40,7 @@ def create_app(config_class=Config.get_config()):
         from .todo import todo_bp
         from .posts import posts_bp
         from .api import api_bp
+        from .swagger import swagger_bp
 
         app.register_blueprint(api_bp, url_prefix="/api")
         app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -48,6 +49,7 @@ def create_app(config_class=Config.get_config()):
         app.register_blueprint(cookie_bp, url_prefix="/cookie")
         app.register_blueprint(todo_bp, url_prefix="/todo")
         app.register_blueprint(posts_bp, url_prefix="/post")
+        app.register_blueprint(swagger_bp)
 
         from . import views
 
