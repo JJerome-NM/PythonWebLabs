@@ -14,7 +14,7 @@ class AuthUser(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True, nullable=False)
     username = db.Column(db.String(30), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), unique=False, nullable=False)
-    avatar_image = db.Column(db.String(30), nullable=True, default=config.AVATAR_DEFAULT)
+    avatar_image = db.Column(db.String(60), nullable=True, default=config.AVATAR_DEFAULT)
     about_me = db.Column(db.String(500), nullable=True, default="")
     last_seen = db.Column(db.DateTime, nullable=True, default=datetime.datetime.now().replace(microsecond=0))
 
