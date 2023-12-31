@@ -22,7 +22,7 @@ class Config(object):
 
     # SQLALCHEMY
     SQLALCHEMY_DATABASE_URI = (environ.get('SQLALCHEMY_DATABASE_URI') or
-                               'postgresql://postgres:postgres@localhost/postgres')
+                               'postgresql://postgres:postgres@localhost:5432/postgres')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # SQLALCHEMY Pagination

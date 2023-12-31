@@ -11,9 +11,9 @@ from app import db, bcrypt, login_manager, config
 
 class AuthUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(35), unique=True, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
     username = db.Column(db.String(30), unique=True, nullable=False)
-    password_hash = db.Column(db.String(60), unique=False, nullable=False)
+    password_hash = db.Column(db.String(200), unique=False, nullable=False)
     avatar_image = db.Column(db.String(30), nullable=True, default=config.AVATAR_DEFAULT)
     about_me = db.Column(db.String(500), nullable=True, default="")
     last_seen = db.Column(db.DateTime, nullable=True, default=datetime.datetime.now().replace(microsecond=0))
@@ -24,7 +24,7 @@ class AuthUser(db.Model, UserMixin):
 
     @password.setter
     def password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password=password)
+        self.password_hash = bcrypt.generate_password_hash(password=password).decode('utf-8')
 
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)

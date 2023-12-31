@@ -38,7 +38,7 @@ def create_app(config_class=Config.get_config()):
         from .common import common_bp
         from .cookie import cookie_bp
         from .todo import todo_bp
-        from .posts import posts_bp
+        # from .posts import posts_bp
         from .api import api_bp
         from .swagger import swagger_bp
 
@@ -48,7 +48,7 @@ def create_app(config_class=Config.get_config()):
         app.register_blueprint(common_bp, url_prefix="/common")
         app.register_blueprint(cookie_bp, url_prefix="/cookie")
         app.register_blueprint(todo_bp, url_prefix="/todo")
-        app.register_blueprint(posts_bp, url_prefix="/post")
+        # app.register_blueprint(posts_bp, url_prefix="/post")
         app.register_blueprint(swagger_bp)
 
         from . import views
